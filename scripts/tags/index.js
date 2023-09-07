@@ -34,4 +34,8 @@ hexo.extend.tag.register('poetry', require('./lib/poetry')(hexo), true)
 hexo.extend.tag.register('quot', require('./lib/quot')(hexo))
 hexo.extend.tag.register('tag', require('./lib/tag')(hexo))
 
+// diagram
+hexo.extend.tag.register('echarts', require('./lib/echarts')(hexo), true)
+hexo.extend.tag.register('mermaid', require('./lib/mermaid')(hexo), true)
+
 // others

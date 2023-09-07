@@ -146,6 +146,12 @@
   if ('<%- theme.plugins.copycode.enable %>' == 'true') {
     stellar.plugins.copycode = Object.assign(<%- JSON.stringify(theme.plugins.copycode) %>);
   }
+  if ('<%- theme.plugins.mermaid.enable %>' == 'true' && '<%- page.mermaid %>' == 'true') {
+    stellar.plugins.mermaid = Object.assign(<%- JSON.stringify(theme.plugins.mermaid) %>);
+  }
+  if ('<%- theme.plugins.echarts.enable %>' == 'true' && '<%- page.echarts %>' == 'true') {
+    stellar.plugins.echarts = Object.assign(<%- JSON.stringify(theme.plugins.echarts) %>);
+  }
 </script>
 
 <!-- required -->

@@ -44,3 +44,57 @@
     background: var(--card)
     color: $color-hover
     border-color: var(--block-border)
+
+
+/*Firefox*/
+@-moz-document url-prefix()
+	.md-text .highlight
+    margin: var(--gap-p) 0
+    border-radius: $border-block
+    overflow: hidden
+    background: var(--block)
+    line-height: 1.5
+    font-family: $ff-codeblock
+    box-sizing: border-box
+    @media screen and (min-width: $device-mobile)
+      min-width: 180px
+  
+
+  pre
+    overflow: auto
+
+
+/*IE9+*/
+@media all and (min-width:0) 
+	.md-text .highlight
+    margin: var(--gap-p) 0
+    border-radius: $border-block
+    overflow: hidden
+    background: var(--block)
+    line-height: 1.5
+    font-family: $ff-codeblock
+    box-sizing: border-box
+    @media screen and (min-width: $device-mobile)
+      min-width: 180px
+
+
+  pre
+    overflow: auto
+
+
+/*IE10+*/
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none)
+	.md-text .highlight
+    margin: var(--gap-p) 0
+    border-radius: $border-block
+    overflow: hidden
+    background: var(--block)
+    line-height: 1.5
+    font-family: $ff-codeblock
+    box-sizing: border-box
+    @media screen and (min-width: $device-mobile)
+      min-width: 180px
+
+
+  pre
+    overflow: auto

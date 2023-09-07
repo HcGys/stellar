@@ -9,6 +9,8 @@
 
 'use strict'
 
+var folding_index = 0 
+
 module.exports = ctx => function(args, content) {
   args = ctx.args.map(args, ['color', 'child', 'open'], ['title'])
   var el = ''
@@ -18,6 +20,7 @@ module.exports = ctx => function(args, content) {
   if (args.open && args.open == 'true') {
     el += ' open'
   }
+  el += 'id="foldering_' + ++folding_index + '"'
   el += '>'
   // summary
   el += '<summary><span>' + (args.title || '') + '</span></summary>'

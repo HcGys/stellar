@@ -1,0 +1,14 @@
+<% if (theme.plugins.echarts.enable) { %>
+    <script type="text/javascript" src="<%- theme.plugins.echarts.js %>"></script>
+    <% if (theme.plugins.echarts.theme.dark) { %>
+      <script type="text/javascript" src="https://static.listentothewind.cn/js/echarts_theme/<%- theme.plugins.echarts.theme.dark %>.js"></script>
+    <% } else { %>
+      <script type="text/javascript" src="https://static.listentothewind.cn/js/echarts_theme/dark.js"></script>
+    <% } %>
+    <% if (theme.plugins.echarts.theme.light) { %>
+      <script type="text/javascript" src="https://static.listentothewind.cn/js/echarts_theme/<%- theme.plugins.echarts.theme.light %>.js"></script>
+    <% } else { %>
+      <script type="text/javascript" src="https://static.listentothewind.cn/js/echarts_theme/light.js"></script>
+    <% } %>
+<% } %>
+  

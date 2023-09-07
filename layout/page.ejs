@@ -1,5 +1,11 @@
 <%
+if (page.title_show == undefined) {
+  page.title_show = true;
+}
 function layoutTitle() {
+  if (!page.title_show && !page.h1) {
+    return ''
+  }
   const title = page.h1 || page.title;
   if (title && title.length > 0) {
     return '<h1 class="article-title"><span>' + title + '</span></h1>';
@@ -14,6 +20,9 @@ function layoutDiv() {
   }
   if (page.mermaid == true) {
     el += partial('mermaid');
+  }
+  if (page.echarts == true) {
+    el += partial('echarts');
   }
   if (page.h1 || page.title || (page.content && page.content.length > 0)) {
     el += partial('_partial/main/navbar/breadcrumb');

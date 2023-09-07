@@ -8,22 +8,50 @@ pre.mermaid
   width: 100%
   display: inline-block
 
-
-.mermaid svg
-  width: 100%
-  display: inline-block
-
 .mermaid span,text
-  font-family: $ff-body
+  font-family: $ff-body !important
 
 .mermaid .edgeLabel
   padding: 4px
   background-color: var(--site-bg) !important
 
+.mermaid .edgeLabel:empty
+  padding: 0
+
 .mermaid rect.basic.label-container
   stroke: var(--block-border) !important
   fill: var(--block) !important
-  
+
+.mermaid 
+  rect.actor,
+  .labelBox
+    stroke: var(--block-border) !important
+    fill: var(--block) !important
+
+
+  line 
+    stroke: var(--text-meta) !important
+
+
+  rect
+    stroke: var(--block-border) !important
+
+
+  rect.inner
+    fill: var(--site-bg) !important
+
+
+  .attributeBoxEven
+    fill: var(--site-bg) !important
+
+  .attributeBoxOdd
+    fill: var(--site-bg) !important
+
+  .entityBox 
+    fill: var(--block) !important
+
+
+
 set_mermaid_darkmode()
   .mermaid 
     fill: #ccc !important
@@ -65,13 +93,14 @@ set_mermaid_darkmode()
     color: #ccc !important
   
 
-  .mermaid .node rect,
+  // .mermaid .node rect,
   .mermaid .node circle,
   .mermaid .node ellipse,
   .mermaid .node polygon,
   .mermaid .node path 
     fill: #1f2020 !important
-    stroke: #81B1DB !important
+    // stroke: #81B1DB !important
+    stroke: var(--text-p4) !important
   
 
   .mermaid .arrowheadPath 
@@ -85,8 +114,10 @@ set_mermaid_darkmode()
   .mermaid .flowchart-link 
     stroke: lightgrey !important
   
+  .mermaid .reqLabelBox 
+    fill: hsl(0, 0%, 34.4117647059%) !important
 
-  .mermaid .edgeLabel 
+  .mermaid .edgeLabel
     background-color: hsl(0, 0%, 34.4117647059%) !important
   
 
@@ -96,8 +127,8 @@ set_mermaid_darkmode()
   
 
   .mermaid .cluster rect 
-    fill: hsl(180, 1.5873015873%, 28.3529411765%) !important
-    stroke: rgba(255, 255, 255, 0.25) !important
+    fill: var(--site-bg)!important
+    stroke: var(--block-border)!important
   
 
   .mermaid .cluster text 
@@ -115,6 +146,12 @@ set_mermaid_darkmode()
 
   .mermaid .flowchartTitleText 
     fill: #ccc
+
+  .mermaid tspan.text-inner-tspan
+    fill: var(--text-p2)
+  
+  .mermaid tspan
+    fill: var(--text-p2)
   
 
 if hexo-config('style.darkmode') == 'auto'

@@ -1,5 +1,7 @@
 *
   outline: none
+body *
+  scrollbar-codeblock()
 html
   font-family: $ff-body
   font-size: $fs-root
@@ -7,6 +9,9 @@ html
   -ms-text-size-adjust: 100%
   if hexo-config('style.smooth_scroll')
     scroll-behavior: smooth
+  if hexo-config('style.scrollbar.size')
+    scrollbar(convert(hexo-config('style.scrollbar.size')), convert(hexo-config('style.scrollbar.border')) || 0px, convert(hexo-config('style.scrollbar.color')) || var(--text-meta), convert(hexo-config('style.scrollbar.hover')) || var(--text-p3))
+
 body
   background: var(--site-bg)
   margin: 0

@@ -12,11 +12,14 @@
 
 'use strict'
 
+var folders_index = 0 
+
 module.exports = ctx => function(args, content) {
   args = ctx.args.map(args, ['color'])
   var el = ''
   el += '<div class="tag-plugin folders"'
   el += ' ' + ctx.args.joinTags(args, ['color']).join(' ')
+  el += 'id="folders_' + ++folders_index + '"'
   el += '>'
   
   var arr = content.split(/<!--\s*folder (.*?)\s*-->/g).filter(item => item.trim().length > 0)

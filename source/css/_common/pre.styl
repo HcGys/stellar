@@ -4,3 +4,18 @@ pre:not([class]):has(>code)
   overflow: auto
   code 
     padding: 0
+
+.timeline-pre-has-code
+  display: block
+  padding: 1rem
+  overflow: auto
+  margin: var(--gap-p) 0
+  border-radius: $border-block
+  background: var(--block)
+  line-height: 1.5
+  font-family: $ff-codeblock
+  box-sizing: border-box
+  @media screen and (min-width: $device-mobile)
+    min-width: 180px
+  code 
+    padding: 0

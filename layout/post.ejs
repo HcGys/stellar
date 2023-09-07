@@ -5,7 +5,13 @@ if (page.menu_id == undefined) {
 if (page.header == undefined) {
   page.header = 'auto';
 }
+if (page.title_show == undefined) {
+  page.title_show = true;
+}
 function layoutTitle() {
+  if (!page.title_show && !page.h1) {
+    return ''
+  }
   const title = page.h1 || page.title;
   if (title && title.length > 0) {
     return '<h1 class="article-title"><span>' + title + '</span></h1>';
@@ -24,6 +30,9 @@ if (theme.plugins.heti && theme.plugins.heti.enable) {
 <% } %>
 <% if (page.mermaid == true){ %>
   <%- partial('mermaid') %>
+<% } %>
+<% if (page.echarts == true){ %>
+  <%- partial('echarts') %>
 <% } %>
 <%- partial('_partial/main/navbar/breadcrumb') %>
 <article class='md-text content<%- heti %> <%- post.layout %><%- post.indent ? ' indent' : '' %><%- scrollreveal() %>'>

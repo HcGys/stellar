@@ -23,7 +23,7 @@ p>code:not([class]),li>code:not([class])
 
 .md-text .highlight
   position: relative
-  overflow: auto
+  overflow: hidden
   display: block
   figcaption
     color: var(--text-p2)
@@ -37,6 +37,9 @@ p>code:not([class]),li>code:not([class])
       border-bottom-left-radius: $border-bar
       border-bottom-right-radius: $border-bar
       background: var(--block-hover)
+      border-bottom: 1px solid var(--block-border)
+      border-right: 1px solid var(--block-border)
+      border-left: 1px solid var(--block-border)
   >table
     overflow: auto
     display: block

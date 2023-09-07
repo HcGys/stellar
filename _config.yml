@@ -338,7 +338,7 @@ plugins:
     auto_render_min_js: <script defer src="https://gcore.jsdelivr.net/npm/katex@0.16.4/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"onload="renderMathInElement(document.body);"></script>
 
   # Mermaid - markdwon to flow chart, seq chart, class chart ...
-  # 需要安装 npm install --save hexo-filter-mermaid-diagrams
+  # 需要安装 npm install --save hexo-filter-mermaid-diagrams(已经内置，采取标签形式)
   # 使用时 需要在Markdown文件开头加入 mermaid: true
   # 使用示例：
   # ```mermaid
@@ -353,6 +353,16 @@ plugins:
     # Available themes: default | dark | forest | neutral
     theme: neutral
 
+  # echarts
+  echarts:
+    enable: false
+    js: https://unpkg.com/echarts@5.4.3/dist/echarts.min.js
+    themejs: 
+
+
+  # kroki
+  # npm install --save hexo-filter-krori
+
   # 代码块复制按钮
   copycode:
     enable: true
@@ -365,8 +375,7 @@ plugins:
   tianli_gpt:
     enable: false
     field: post # all, post, wiki
-    api: 5Q5mpqRK5DkwT1X9Gi5e # tianli_gpt key
-    typingAnimate: true # 打字机动画 
+    api: 5Q5mpqRK5DkwT1X9Gi5e
 
 style:
   darkmode: auto # auto / always / false

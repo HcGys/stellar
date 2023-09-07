@@ -3,7 +3,8 @@
 
   <script>
     var mermaid_config = {
-      startOnLoad: true,
+      startOnLoad: false,
+      securityLevel: 'loose',
       theme:
         "<%- theme.style.darkmode %>" == "auto" &&
           window.matchMedia("(prefers-color-scheme: dark)").matches
