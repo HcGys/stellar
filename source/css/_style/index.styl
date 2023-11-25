@@ -1,0 +1,23 @@
+// 通用组件
+@import '_common/*'
+
+// 布局
+// @import '_layout'
+if hexo-config('style.layout') == 'default'
+    @import '_layout/*'
+
+if hexo-config('style.layout') == 'volantis'
+    @import '_volantis_layout/_layout/*'
+
+// 标签
+@import '_tag-plugins/*'
+
+// 组件
+if hexo-config('style.layout') == 'default'
+    @import '_widgets/*'
+
+if hexo-config('style.layout') == 'volantis'
+    @import '_volantis_layout/_widgets/*'
+
+// 可选插件
+@import '_plugins'

@@ -1,3 +1,18 @@
+navbar:
+  archive: 归档
+  category: 分类
+  tag: 标签
+
+footer:
+  license: '博客内容遵循 [署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)'
+  use: 本站使用
+  theme: 作为主题
+  total_views: 总访问量为
+  total_visitors: 总访客量
+  times: 次
+  site_source: 本站使用 %s 作为主题，您可以在 %s 找到[本站源码](%s)。
+  site_views: 总访问量约为 %s 次，访问人数约为 %s 人。
+
 btn:
   home: 主页
   blog: 文章
@@ -19,6 +34,8 @@ meta:
   next: 接下来阅读
   older: 较早文章
   newer: 较新文章
+  wordcount: '字数：%s 字'
+  duration: '时长：%s 分钟'
   references: 参考资料
   related_posts: 您可能感兴趣的文章
   comment_title: 快来参与讨论吧
@@ -34,6 +51,15 @@ meta:
     hour: 小时前
     day: 天前
     month: 个月前
+  copyright:
+    author: 本文作者
+    link: 本文链接
+    license_title: 版权声明
+    license_content: "本博客所有文章除特别声明外，均采用 %s 许可协议。转载请注明出处！"
+    date: 发布于
+    updated: 更新于
+    references: 原文出处
+    license: 许可协议
 
 page:
   error:
@@ -45,6 +71,11 @@ search:
   search: 站内搜索
   search_in: 在 %s 中搜索
   no_results: 没有找到内容！
+  # 下面是volantis布局使用
+  title: 搜索
+  load_data: 数据库加载中
+  hits_empty: '找不到您查询的内容：${query}'
+  hits_stats: '找到 ${hits} 条结果，用时 ${time} 毫秒'
 
 message:
   copied: 复制成功

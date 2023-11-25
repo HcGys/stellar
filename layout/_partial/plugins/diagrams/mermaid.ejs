@@ -1,0 +1,160 @@
+<% if (theme.plugins.mermaid.enable) { %>
+  <script type="text/javascript" src="<%- theme.plugins.mermaid.js %>"></script>
+
+  <script>
+    function check_mermaid_theme() {
+      let theme = '';
+      if ("<%- theme.plugins.darkmode.type %>" === 'custom') {
+        theme = stellar.dark.mode === 'dark' ? 'dark' : "<%- theme.plugins.mermaid.theme %>";
+        console.log(stellar.dark.mode);
+      } else if ("<%- theme.plugins.darkmode.type %>" === 'auto') {
+        theme = window.matchMedia("(prefers-color-scheme: dark)").matches
+          ? "dark"
+          : "<%- theme.plugins.mermaid.theme %>";
+      } else if ("<%- theme.plugins.darkmode.type %>" === 'always') {
+        theme = 'dark';
+      }
+      return theme
+    }
+    var mermaid_config = {
+      startOnLoad: false,
+      securityLevel: 'loose',
+      theme:
+        check_mermaid_theme(),
+      logLevel: 3,
+      themeVariables: {
+        darkMode: true
+      },
+      flowchart: {
+        useMaxWidth: false,
+        htmlLabels: true,
+        curve: "linear"
+      },
+      gantt: {
+        axisFormat: "%Y/%m/%d"
+      },
+      sequence: {
+        actorMargin: 50
+      }
+    }
+    if (window.mermaid) {
+      mermaid.initialize(mermaid_config);
+    }
+
+    function dark_mermaids() {
+      if (<%- theme.plugins.darkmode.enable %> && '<%- theme.plugins.darkmode.type %>' === 'custom') {
+        let theme;
+        if (stellar.dark.mode === "dark") {
+          theme = 'dark';
+        } else {
+          theme = "<%- theme.plugins.mermaid.theme %>";
+        }
+        mermaid_config.theme = theme;
+        // mermaid_config.startOnLoad = true;
+        console.log(mermaid_config);
+        mermaid.initialize(mermaid_config);
+      }
+    }
+    stellar.dark.push(dark_mermaids);
+
+    window.addEventListener("DOMContentLoaded", function () {
+      if (window.mermaid) {
+        // 对tabs下的mermaid进行标记，用以区分
+        markNodePos('.mermaid');
+
+        // 对默认显示的tab下面的mermaid进行标记，用以初始化渲染
+        diagramRenderMark('.mermaid', document);
+
+        // 初始化渲染
+        var firstRender = [];
+        var merNodes = document.querySelectorAll('.mermaid');
+        for (var i = 0; i < merNodes.length; ++i) {
+          // 修改文本内容，主要是mermaid标签中含有<会报错，对'\n'处理是为了与其他标签的处理保持一致，但是不导致报错的后处理
+          var mCode = merNodes[i].innerHTML;
+          // merNodes[i].innerHTML = mCode.replaceAll('&#60;', '<').split('&#13;').join('\n');
+          merNodes[i].innerHTML = mCode.split('&#13;').join('\n');
+          if (merNodes[i].classList.contains('infolder') || merNodes[i].classList.contains('infolding')) {
+            // 火狐浏览器
+            // 修复 folder、folding下的mermaid宽度高度问题
+            continue;
+          }
+          if (!merNodes[i].classList.contains('intab') || merNodes[i].classList.contains('wait-drew')) {
+            firstRender.push(merNodes[i]);
+            if (merNodes[i].classList.contains('wait-drew')) {
+              merNodes[i].classList.remove('wait-drew');
+              merNodes[i].classList.add('drew');
+            }
+          }
+        }
+        mermaid.run({
+          suppressErrors: true,
+          nodes: firstRender,
+        });
+      }
+    });
+
+  </script>
+<% } %>
+
+<!-- (function(window){
+  'use strict'
+  
+    const elementCode = '.language-mermaid'
+    const loadMermaid = function(theme) {
+      window.mermaid.initialize({theme})
+      window.mermaid.init({theme}, document.querySelectorAll(elementCode))
+    }
+    const saveOriginalData = function(){
+      return new Promise((resolve, reject) => {
+        try {
+          var els = document.querySelectorAll(elementCode),
+              count = els.length;
+          els.forEach(element => {
+            element.setAttribute('data-original-code', element.innerHTML)
+            count--
+            if(count == 0){
+              resolve()
+            }
+          });
+        } catch (error) {
+         reject(error) 
+        }
+      })
+    }
+    const resetProcessed = function(){
+      return new Promise((resolve, reject) => {
+        try {
+          var els = document.querySelectorAll(elementCode),
+              count = els.length;
+          els.forEach(element => {
+            if(element.getAttribute('data-original-code') != null){
+              element.removeAttribute('data-processed')
+              element.innerHTML = element.getAttribute('data-original-code')
+            }
+            count--
+            if(count == 0){
+              resolve()
+            }
+          });
+        } catch (error) {
+         reject(error) 
+        }
+      })
+    } 
+  
+    const init = ()=>{
+      saveOriginalData()
+      .catch( console.error )
+      document.body.addEventListener('dark-theme-set', ()=>{
+        resetProcessed()
+        .then(loadMermaid('dark'))
+        .catch(console.error)
+      })
+      document.body.addEventListener('light-theme-set', ()=>{
+        resetProcessed()
+        .then(loadMermaid('default'))
+        .catch(console.error)
+      })
+    }
+    window.initMermaid = init
+  })(window); -->

@@ -1,0 +1,25 @@
+<% if (theme.plugins.stellar) { %>
+    <script>
+        for (let key of Object.keys(stellar.GLOBAL_CONFIG.plugins.stellar)) {
+            let js = stellar.GLOBAL_CONFIG.plugins.stellar[key];
+            if (key == 'linkcard') {
+                stellar.loadScript(js, { defer: true }).then(function () {
+                setCardLink(document.querySelectorAll('a.link-card[cardlink]'));
+                });
+                // stellar.loadScript(js, () => {
+                //   setCardLink(document.querySelectorAll('a.link-card[cardlink]'));
+                // });
+            } else {
+                const els = document.getElementsByClassName('stellar-' + key + '-api');
+                if (els != undefined && els.length > 0) {
+                    stellar.jQuery(() => {
+                        stellar.loadScript(js, { defer: true });
+                        if (key == 'timeline') {
+                            stellar.loadScript(stellar.GLOBAL_CONFIG.plugins.marked);
+                        }
+                    })
+                }
+            }
+        }
+    </script>
+<% } %>

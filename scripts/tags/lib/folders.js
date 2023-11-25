@@ -40,13 +40,21 @@ module.exports = ctx => function(args, content) {
       }
     })
     nodes.forEach((node, i) => {
-      el += '<details class="folder" index="' + (i) + '">'
+      // el += '<details class="folder" index="' + (i) + '">'
+      // // summary
+      // el += '<summary><span>' + (node.header || '') + '</span></summary>'
+      // // content
+      // el += '<div class="body">'
+      // el += ctx.render.renderSync({text: (node.body || ''), engine: 'markdown'}).split('\n').join('')
+      // el += '</div></details>'
+
+      el += '<div class="folder" index="' + (i) + '">'
       // summary
-      el += '<summary><span>' + (node.header || '') + '</span></summary>'
+      el += '<details><summary><span>' + (node.header || '') + '</span></summary></details>'
       // content
       el += '<div class="body">'
       el += ctx.render.renderSync({text: (node.body || ''), engine: 'markdown'}).split('\n').join('')
-      el += '</div></details>'
+      el += '</div></div>'
     })  
   }
 

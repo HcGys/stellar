@@ -98,29 +98,47 @@ module.exports = ctx => {
     proj.homepage = proj_pages[0]
     proj.homepage.is_homepage = true
     // 内页按 section 分组
-    var section_configs = []
+    // var section_configs = []
+    // if (proj.sections) {
+    //   for (let t of Object.keys(proj.sections)) {
+    //     let range = proj.sections[t]
+    //     if (range.length > 1) {
+    //       section_configs.push({
+    //         title: t,
+    //         from: range[0],
+    //         to: range[1]
+    //       })
+    //     }
+    //   }
+    // }
+    // var sections = []
+    // section_configs.forEach((sec, i) => {
+    //   const sec_pages = proj_pages.filter( p => p.order >= sec.from && p.order <= sec.to )
+    //   if (sec_pages && sec_pages.length > 0) {
+    //     sections.push({
+    //       title: sec.title,
+    //       pages: sec_pages
+    //     })
+    //   }
+    // })
+
+    var sections = []
     if (proj.sections) {
       for (let t of Object.keys(proj.sections)) {
         let range = proj.sections[t]
         if (range.length > 1) {
-          section_configs.push({
-            title: t,
-            from: range[0],
-            to: range[1]
-          })
+          const sec_pages = proj_pages.filter( p => p.order >= range[0] && p.order <= range[1] )
+          if (sec_pages && sec_pages.length > 0) {
+            sections.push({
+              title: t,
+              pages: sec_pages,
+              from: range[0],
+              to: range[1]
+            })
+          }
         }
       }
     }
-    var sections = []
-    section_configs.forEach((sec, i) => {
-      const sec_pages = proj_pages.filter( p => p.order >= sec.from && p.order <= sec.to )
-      if (sec_pages && sec_pages.length > 0) {
-        sections.push({
-          title: sec.title,
-          pages: sec_pages
-        })
-      }
-    })
     proj.sections = sections
     proj.pages = proj_pages
   }

@@ -7,7 +7,24 @@
 
 'use strict';
 
+const { version } = require('../../../package.json');
+
 const path = require('path');
+
+function isObject(item) {
+  return item && typeof item === 'object' && !Array.isArray(item);
+}
+
+function merge(target, source) {
+  for (const key in source) {
+    if (isObject(target[key]) && isObject(source[key])) {
+      merge(target[key], source[key]);
+    } else {
+      target[key] = source[key];
+    }
+  }
+  return target;
+}
 
 module.exports = hexo => {
 
@@ -29,6 +46,7 @@ module.exports = hexo => {
 
   // merge data
   const data = hexo.locals.get('data');
+  merge(hexo.theme.config, hexo.config.theme_config);
   // merge widgets
   var widgets = hexo.render.renderSync({ path: path.join(hexo.theme_dir, '_data/widgets.yml'), engine: 'yaml' });
   if (data.widgets) {
@@ -59,5 +77,7 @@ module.exports = hexo => {
   if (hexo.theme.config.sidebar.menu == undefined) {
     hexo.theme.config.sidebar.menu = [];
   }
+
+  hexo.theme.config.stellar.version = version;
 
 };

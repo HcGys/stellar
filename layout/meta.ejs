@@ -1,0 +1,42 @@
+<%
+var topMetas = theme.article.body.top_meta || [];
+if (typeof page.top_meta === 'object') {
+  topMetas = page.top_meta;
+} else if (post.top_meta == false) {
+  topMetas = [];
+}
+var bottomMetas = theme.article.body.bottom_meta || [];
+if (typeof page.bottom_meta === 'object') {
+  bottomMetas = page.bottom_meta;
+} else if (post.bottom_meta == false) {
+  bottomMetas = [];
+}
+%>
+
+<% if (topMetas.length > 0 && position == 'top') { %>
+  <div class="article-meta" id="top">
+    <div class='new-meta-box'>
+      <% (topMetas).forEach(function(meta) { %>
+        <% if (meta in theme.article.body.meta_library){ %>
+          <%- partial('./_partial/meta/' + meta, {post: post}) %>
+        <% } %>
+      <% }) %>
+    </div>
+      <!-- Custom Files topMeta begin-->
+      <%- stellar_inject('topMeta') %>
+      <!-- Custom Files topMeta end-->
+  </div>
+<% } else if (bottomMetas.length > 0 && position == 'bottom') { %>
+  <div class='article-meta' id="bottom">
+    <div class='new-meta-box'>
+      <% (bottomMetas).forEach(function(meta){ %>
+        <% if (meta in theme.article.body.meta_library) { %>
+          <%- partial('./_partial/meta/' + meta, {post: post}) %>
+        <% } %>
+      <% }) %>
+    </div>
+    <!-- Custom Files bottomMeta begin -->
+    <%- stellar_inject('bottomMeta') %>
+    <!-- Custom Files bottomMeta end -->
+  </div>
+<% } %>

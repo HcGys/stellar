@@ -1,158 +1,53 @@
 <script type="text/javascript">
-  const stellar = {
-    // 懒加载 css https://github.com/filamentgroup/loadCSS
-    loadCSS: (href, before, media, attributes) => {
-      var doc = window.document;
-      var ss = doc.createElement("link");
-      var ref;
-      if (before) {
-        ref = before;
-      } else {
-        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
-        ref = refs[refs.length - 1];
-      }
-      var sheets = doc.styleSheets;
-      if (attributes) {
-        for (var attributeName in attributes) {
-          if (attributes.hasOwnProperty(attributeName)) {
-            ss.setAttribute(attributeName, attributes[attributeName]);
-          }
-        }
-      }
-      ss.rel = "stylesheet";
-      ss.href = href;
-      ss.media = "only x";
-      function ready(cb) {
-        if (doc.body) {
-          return cb();
-        }
-        setTimeout(function () {
-          ready(cb);
-        });
-      }
-      ready(function () {
-        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
-      });
-      var onloadcssdefined = function (cb) {
-        var resolvedHref = ss.href;
-        var i = sheets.length;
-        while (i--) {
-          if (sheets[i].href === resolvedHref) {
-            return cb();
-          }
-        }
-        setTimeout(function () {
-          onloadcssdefined(cb);
-        });
-      };
-      function loadCB() {
-        if (ss.addEventListener) {
-          ss.removeEventListener("load", loadCB);
-        }
-        ss.media = media || "all";
-      }
-      if (ss.addEventListener) {
-        ss.addEventListener("load", loadCB);
-      }
-      ss.onloadcssdefined = onloadcssdefined;
-      onloadcssdefined(loadCB);
-      return ss;
-    },
+  stellar.dom.l_body = document.querySelector('.l_body');
+  stellar.dom.l_left = document.querySelector('.l_left');
 
-    // 从 butterfly 和 volantis 获得灵感
-    loadScript: (src, opt) => new Promise((resolve, reject) => {
-      var script = document.createElement('script');
-      if (src.startsWith('/')){
-        src = stellar.config.root + src.substring(1);
+  stellar.dom.bodyAnchor = stellar.dom.$(document.getElementById("safearea")); // 页面主体
+  stellar.dom.topBtn = stellar.dom.$(document.getElementById('s-top')); // 向上
+  stellar.dom.wrapper = stellar.dom.$(document.getElementById('wrapper')); // 整个导航栏
+  stellar.dom.coverAnchor = stellar.dom.$(document.querySelector('#l_cover .cover-wrapper')); // 1个
+  stellar.dom.switcher = stellar.dom.$(document.querySelector('#l_header .switcher .s-search')); // 搜索按钮   移动端 1个
+  stellar.dom.header = stellar.dom.$(document.getElementById('l_header')); // 移动端导航栏
+  stellar.dom.search = stellar.dom.$(document.querySelector('#l_header .m_search')); //搜索框 桌面端 移动端 1个
+  stellar.dom.mPhoneList = stellar.dom.$(document.querySelectorAll('#l_header .m-phone .list-v')); //  手机端 子菜单 多个
+
+  <% if (theme.plugins.fontawesome) { %>
+      stellar.loadCSS("<%- theme.cdn.fontawesome %>");
+  <% } %>
+
+  // 需要在 rightmenu 前加载
+  <% if (theme.rightmenu.enable || window.navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)) { %>
+    //设置遮罩
+
+    stellar.dom.mask = document.querySelector('.rmMask');
+    stellar.dom.mask.style.width = window.innerWidth + 'px';
+    stellar.dom.mask.style.height = window.innerHeight + 'px';
+
+    window.addEventListener("resize", function () {
+      stellar.dom.mask.style.width = window.innerWidth + 'px';
+      stellar.dom.mask.style.height = window.innerHeight + 'px';
+    });
+
+    stellar.dom.mask.addEventListener("click", function () {
+      // 此时是由于移动端展开侧边栏之后激活的mask
+      if (stellar.dom.mask.classList.contains('active')) {
+        stellar.dom.l_body.classList.toggle("sidebar");
+        stellar.dom.mask.style.display = 'none';
+        stellar.dom.mask.classList.remove('active');
       }
-      script.src = src;
-      if (opt) {
-        for (let key of Object.keys(opt)) {
-          script[key] = opt[key]
-        }
-      } else {
-        // 默认异步，如果需要同步，第二个参数传入 {} 即可
-        script.async = true
-      }
-      script.onerror = reject
-      script.onload = script.onreadystatechange = function() {
-        const loadState = this.readyState
-        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
-        script.onload = script.onreadystatechange = null
-        resolve()
-      }
-      document.head.appendChild(script)
-    }),
+    });
 
-    // https://github.com/jerryc127/hexo-theme-butterfly
-    jQuery: (fn) => {
-      if (typeof jQuery === 'undefined') {
-        stellar.loadScript(stellar.plugins.jQuery).then(fn)
-      } else {
-        fn()
-      }
-    }
-  };
-  stellar.version = '<%- theme.stellar.version %>';
-  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/<%- theme.stellar.version %>';
-  stellar.config = {
-    date_suffix: {
-      just: '<%- __('meta.date_suffix.just') %>',
-      min: '<%- __('meta.date_suffix.min') %>',
-      hour: '<%- __('meta.date_suffix.hour') %>',
-      day: '<%- __('meta.date_suffix.day') %>',
-      month: '<%- __('meta.date_suffix.month') %>',
-    },
-    root : '<%- config.root %>',
-  };
+  <% } %>
 
-  // required plugins (only load if needs)
-  stellar.plugins = {
-    jQuery: '<%- url_for(theme.plugins.jquery || "https://gcore.jsdelivr.net/npm/jquery@3.6.2/dist/jquery.min.js") %>'
-  };
+  <% if (theme.rightmenu.enable) { %>
+      stellar.loadScript("/js/rightmenu/rightmenu.js");
+  <% } %>
 
-  if ('<%- theme.search.service %>') {
-    stellar.search = {};
-    stellar.search.service = '<%- theme.search.service %>';
-    if (stellar.search.service == 'local_search') {
-      let service_obj = Object.assign({}, <%- JSON.stringify(theme.search.local_search) %>);
-      stellar.search[stellar.search.service] = service_obj;
-    }
-  }
-
-  // stellar js
-  stellar.plugins.stellar = Object.assign(<%- JSON.stringify(theme.plugins.stellar) %>);
-
-  stellar.plugins.marked = Object.assign(<%- JSON.stringify(theme.plugins.marked) %>);
-  // optional plugins
-  if ('<%- theme.plugins.lazyload.enable %>' == 'true') {
-    stellar.plugins.lazyload = Object.assign(<%- JSON.stringify(theme.plugins.lazyload) %>);
-  }
-  if ('<%- theme.plugins.swiper.enable %>' == 'true') {
-    stellar.plugins.swiper = Object.assign(<%- JSON.stringify(theme.plugins.swiper) %>);
-  }
-  if ('<%- theme.plugins.scrollreveal.enable %>' == 'true') {
-    stellar.plugins.scrollreveal = Object.assign(<%- JSON.stringify(theme.plugins.scrollreveal) %>);
-  }
-  if ('<%- theme.plugins.preload.enable %>' == 'true') {
-    stellar.plugins.preload = Object.assign(<%- JSON.stringify(theme.plugins.preload) %>);
-  }
-  if ('<%- theme.plugins.fancybox.enable %>' == 'true') {
-    stellar.plugins.fancybox = Object.assign(<%- JSON.stringify(theme.plugins.fancybox) %>);
-  }
-  if ('<%- theme.plugins.heti.enable %>' == 'true') {
-    stellar.plugins.heti = Object.assign(<%- JSON.stringify(theme.plugins.heti) %>);
-  }
-  if ('<%- theme.plugins.copycode.enable %>' == 'true') {
-    stellar.plugins.copycode = Object.assign(<%- JSON.stringify(theme.plugins.copycode) %>);
-  }
-  if ('<%- theme.plugins.mermaid.enable %>' == 'true' && '<%- page.mermaid %>' == 'true') {
-    stellar.plugins.mermaid = Object.assign(<%- JSON.stringify(theme.plugins.mermaid) %>);
-  }
-  if ('<%- theme.plugins.echarts.enable %>' == 'true' && '<%- page.echarts %>' == 'true') {
-    stellar.plugins.echarts = Object.assign(<%- JSON.stringify(theme.plugins.echarts) %>);
-  }
 </script>
+
+<% if (theme.plugins.mermaid.enable || theme.plugins.echarts.enable) { %>
+  <%- partial('../plugins/diagrams/global') %>
+<% } %>
 
 <!-- required -->
 <% if (theme.stellar.cdn_js) { %>
@@ -163,10 +58,63 @@
 
 <!-- optional -->
 <%- partial('../plugins/comments/script') %>
+<%- partial('../plugins/toc/script') %>
+
+<% if (theme.rightmenu.enable) { %>
+  <%- partial('../plugins/rightmenu/layout') %>
+<% } %>
+
+<% if (theme.plugins.scrollreveal.enable) { %>
+  <%- partial('../plugins/scrollreveal/scripts') %>
+<% } %>
+
+<% if (theme.plugins.lazyload.enable) { %>
+  <%- partial('../plugins/lazyload/scripts') %>
+<% } %>
+
+<% if (theme.plugins.stellar) { %>
+  <%- partial('../plugins/stellar/scripts') %>
+<% } %>
+
+<% if (theme.plugins.swiper.enable) { %>
+  <%- partial('../plugins/swiper/scripts') %>
+<% } %>
+
+<% if (theme.plugins.preload.enable) { %>
+  <%- partial('../plugins/preload/scripts') %>
+<% } %>
+
+<% if (theme.plugins.fancybox.enable) { %>
+  <%- partial('../plugins/fancybox/scripts') %>
+<% } %>
+
+<% if (theme.search.service) { %>
+  <%- partial('../plugins/search/scripts') %>
+<% } %>
+
+<% if (theme.plugins.heti.enable) { %>
+  <%- partial('../plugins/heti/scripts') %>
+<% } %>
+
+<% if (theme.plugins.copycode.enable) { %>
+  <%- js({src: theme.plugins.copycode.js, async: false}) %>
+<% } %>
+
+<% if (theme.plugins.aplayer.enable) { %>
+  <% page.hasLoadAplayer = false; %>
+<% } %>
+
+<% if (theme.plugins.busuanzi.enable) { %>
+  <script defer src="<%- theme.cdn.busuanzi %>"></script>
+<% } %>
+
+<% if (theme.style.layout === 'volantis' && theme.plugins.parallax.enable) { %>
+  <%- partial('../plugins/parallax/script') %>
+<% } %>
 
 <!-- inject -->
-<% if (config.inject && config.inject.script && config.inject.script.length > 0) { %>
+<!-- <% if (config.inject && config.inject.script && config.inject.script.length > 0) { %>
   <% config.inject.script.forEach(function(js) { %>
     <%- js %>
   <% }) %>
-<% } %>
+<% } %> -->

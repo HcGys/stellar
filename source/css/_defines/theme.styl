@@ -45,7 +45,7 @@ set_text_light()
 set_darkmode()
   :root
     --site-bg: hsl($color-background-h, $color-background-s * 0.5, (100 - $color-background-l) * 2 + 8)
-    --card: hsl($color-block-h, $color-block-s * 1.2, 24)
+    --card: hsl($color-block-h, $color-block-s * 1.2, 24)  // #30353a
     --block: hsl($color-block-h, $color-block-s, 16)
     --block-border: hsl($color-block-h, $color-block-s, 24)
     --block-hover: hsl($color-block-h, $color-block-s, 20)
@@ -61,3 +61,21 @@ if hexo-config('style.darkmode') == 'auto'
 
 if hexo-config('style.darkmode') == 'always'
   set_darkmode()
+
+// theme
+
+if hexo-config('style.theme') == 'card'
+  :root
+      --lay-1: #fff
+      --card: #e7e7e7
+      --block-2: #e5e6e7
+      --card-post: #fff
+      --site-bg: #f2f3f5
+      --lineCode-bg: #f5c3b4
+      // 时间线
+      --timeLineNode-bg: #e2e8eb
+      --timeLineReaction-bg: #afc4df
+      --timeLineFooterLeft-bg: #95C7E0
+      // copy按钮
+      --copyInput-bg: #e3e5e7
+      --copyBtn-bg: #d5d8df

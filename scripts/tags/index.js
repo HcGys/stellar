@@ -38,4 +38,8 @@ hexo.extend.tag.register('tag', require('./lib/tag')(hexo))
 hexo.extend.tag.register('echarts', require('./lib/echarts')(hexo), true)
 hexo.extend.tag.register('mermaid', require('./lib/mermaid')(hexo), true)
 
+// read 阅读类
+hexo.extend.tag.register('reel', require('./lib/read/reel')(hexo), true)
+hexo.extend.tag.register('paper', require('./lib/read/paper')(hexo), true)
+
 // others

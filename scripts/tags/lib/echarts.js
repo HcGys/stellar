@@ -18,19 +18,33 @@ module.exports = ctx => function(args, content) {
   var id = 'echarts' + ((Math.random() * 9999) | 0)
   var h = args.height ? args.height : 300 + 'px'
   el += '<div class="echarts-box" style="height: ' + h + ';"><div id="' + id + '" class="echarts" style="width: 100%; height: 100%;" ></div></div>'
-  var theme_has = ctx.theme.config.style.darkmode == 'auto' ? true : false
-  var darktheme = ctx.theme.config.plugins.echarts.theme.dark
-  var lighttheme = ctx.theme.config.plugins.echarts.theme.light
+  // var theme_has = ctx.theme.config.style.darkmode == 'auto' ? true : false
+  // var darktheme = ctx.theme.config.plugins.echarts.theme.dark
+  // var lighttheme = ctx.theme.config.plugins.echarts.theme.light
+
+  // var theme;
+  //   if (${theme_has}) {
+  //     theme = window.matchMedia("(prefers-color-scheme: dark)").matches
+  //         ? '${darktheme}' : '${lighttheme}';
+  //   }
   el += `<script>
-    var theme;
-    if (${theme_has}) {
-      theme = window.matchMedia("(prefers-color-scheme: dark)").matches
-          ? '${darktheme}' : '${lighttheme}';
-    }
-    var target = document.getElementById('${id}');
-    var eChart${id} = echarts.init(target, theme);
+    var target${id} = document.getElementById('${id}');
+    var eChart${id} = echarts.init(target${id}, theme);
     var option${id} = ${content};
     eChart${id}.setOption(option${id});
+    function dark_echarts() {
+      if (${ctx.theme.config.plugins.darkmode.enable && ctx.theme.config.plugins.darkmode.type === 'custom'}) {
+        if (stellar.dark.mode === "dark") {
+          theme = 'dark';
+        } else {
+          theme = 'light';
+        }
+        eChart${id}.dispose();
+        eChart${id} = echarts.init(target${id}, theme);
+        eChart${id}.setOption(option${id});
+      }
+    }
+    stellar.dark.push(dark_echarts);
     </script>`
   // //  当窗口或者大小发生改变时执行resize，重新绘制图表
   // window.addEventListener("resize", function () {

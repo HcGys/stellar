@@ -38,8 +38,8 @@ function layoutWikiCover() {
   if (desc && cover.includes('description')) {
     el += '<div class="description">' + desc + '</div>';
   }
-  el += '<div class="start-wrap">';
-  el += '<a class="button start gradient" href="#start">' + (proj.start || __('btn.getting_started')) + '</a>';
+  el += '<div id="start-wrap">';
+  el += '<a class="button start gradient">' + (proj.start || __('btn.getting_started')) + '</a>';
   el += '</div>';
   el += '</article>';
   el += '</div>';

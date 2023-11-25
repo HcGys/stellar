@@ -1,0 +1,97 @@
+.page-footer
+  margin: 4rem 1rem 3rem
+  color: var(--text-p3)
+  a
+    color: var(--text-p3)
+    &:hover
+      color: $color-hover
+
+.page-footer .sitemap
+  margin: .5rem 0 2rem
+  display: grid
+  scrollbar-width: none
+  grid-gap: 1rem 1rem
+  grid-auto-flow: column dense
+  overflow: scroll
+  scrollbar(0, 0)
+
+
+.page-footer .sitemap .sitemap-group
+  display: flex
+  flex-direction: column
+  align-items: flex-start
+  >span,>a
+    text-decoration: none
+    txt-ellipsis()
+  >span
+    margin: .5rem 0
+    font-weight: 500
+    color: var(--text-p1)
+  >a
+    margin: .2rem 0
+
+
+.page-footer .text
+  p
+    margin: 4px 0
+    line-height: 1.5
+  a:not([class])
+    text-decoration: underline
+    font-weight: 500
+
+
+footer.footer
+  position: relative
+  padding: 40px 10px 120px 10px
+  width: 100%
+  color: var(--text-p3)
+  margin: 0px auto
+  &,p
+    font-size: $fs-13
+  overflow: hidden
+  text-align: center
+  .licenses
+    color: fade(@color_text_main, 50%)
+  .social-wrapper
+    display: flex
+    justify-content: center
+    flex-wrap: wrap
+    margin: 4px $gap * 0.5
+
+  a
+    color: var(--text-p3)
+    padding: 0
+    trans1(all)
+    &:hover
+      color: $color-hover
+    &:not(.social):hover
+      text-decoration: underline
+    &.social
+      position: relative
+      display: inline-block
+      text-align: center
+      display: flex
+      justify-content: center
+      align-items: center
+      min-width: 36px
+      min-height: 36px
+      margin: 4px
+      opacity: .75
+      border-radius: 4px
+      font-size: 1rem
+      img
+        margin: 8px
+        height: 24px
+      &:hover
+        color: $color-hover
+        background: alpha(@color, 0.1)
+
+
+
+  .copyright
+    margin-top: $gap
+    p
+      font-size: $fs-13
+
+  @media screen and (max-width: $device-tablet)
+    justify-content: center

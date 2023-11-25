@@ -9,11 +9,12 @@ function layoutDiv() {
   delete opts['layout'];
   opts.class = 'tag ';
   el += '<widget class="widget-wrapper tagcloud">';
-    if (item.title) {
-      el += '<div class="widget-header cap theme dis-select">';
-      el += '<span class="name">' + item.title + '</span>';
-      el += '</div>';
-    }
+    // if (item.title) {
+    //   el += '<div class="widget-header cap theme dis-select">';
+    //   el += '<span class="name">' + item.title + '</span>';
+    //   el += '</div>';
+    // }
+    el += partial('header', {item: item});
     el += '<div class="widget-body fs14">';
       el += tagcloud(site.tags, opts);
     el += '</div>';

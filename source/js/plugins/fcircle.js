@@ -75,7 +75,7 @@ const FCircle = {
   },
 }
 
-$(function () {
+function renderFC() {
   const els = document.getElementsByClassName('stellar-fcircle-api');
   for (var i = 0; i < els.length; i++) {
     const el = els[i];
@@ -89,4 +89,24 @@ $(function () {
     cfg.avatar = 'https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.4/avatar/round/3442075.svg';
     FCircle.layoutDiv(cfg);
   }
+}
+
+// $(function () {
+//   const els = document.getElementsByClassName('stellar-fcircle-api');
+//   for (var i = 0; i < els.length; i++) {
+//     const el = els[i];
+//     const api = el.getAttribute('api');
+//     if (api == null) {
+//       continue;
+//     }
+//     var cfg = new Object();
+//     cfg.el = el;
+//     cfg.api = api;
+//     cfg.avatar = 'https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.4/avatar/round/3442075.svg';
+//     FCircle.layoutDiv(cfg);
+//   }
+// });
+
+$(function () {
+  renderFC();
 });

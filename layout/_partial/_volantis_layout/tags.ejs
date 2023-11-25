@@ -1,0 +1,27 @@
+<%- partial('_pre') %>
+<%
+page.robots = 'noindex,follow';
+page.cover = true;
+if (page.menu_id == undefined) {
+  page.menu_id = 'post';
+}
+%>
+<% if (site.tags.length) { %>
+  <% page.title = __('btn.tags'); %>
+  <% page.layout = 'tags'; %>
+  <div class="l_main<%- page.sidebar == false ? ' no_sidebar' : '' %>">
+    <div class='post-list tags'>
+      <article class='<%- scrollreveal() %>' id='tags'>
+        <% site.tags.sort('length', -1).each(function(tag){ %>
+          <a class='tag' href="<%= url_for(tag.path) %>">
+            <span class='name'><%= tag.name %></span>
+          </a>
+        <% }) %>
+      </article>
+    </div>
+    <!-- 移动端 -->
+    <aside class='mobile-sidebar reveal' layout='<%- page.layout %>'>
+      <%- partial('_partial/widgets/load', {isMobile: true}) %>
+    </aside>
+  </div>
+<% } %>

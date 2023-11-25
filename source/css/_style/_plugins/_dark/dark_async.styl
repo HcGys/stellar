@@ -1,0 +1,69 @@
+// 异步加载的暗黑模式 暗黑模式 CSS 变量
+
+async_dark()
+    // 整体
+    --site-bg: hsl($color-background-h, $color-background-s * 0.5, (100 - $color-background-l) * 2 + 8)
+    --card: hsl($color-block-h, $color-block-s * 1.2, 24)
+    --block: hsl($color-block-h, $color-block-s, 16)
+    --block-border: hsl($color-block-h, $color-block-s, 24)
+    --block-hover: hsl($color-block-h, $color-block-s, 20)
+    --text-p0: hsl($color-text-h, $color-text-s, 100)
+    --text-p1: hsl($color-text-h, $color-text-s, 100 - $color-text-l / 0.5 * 0.5)
+    --text-p2: hsl($color-text-h, $color-text-s, 100 - $color-text-l / 0.5 * 0.75)
+    --text-p3: hsl($color-text-h, $color-text-s, 100 - $color-text-l / 0.5 * 1.2)
+    --text-p4: hsl($color-text-h, $color-text-s, 100 - $color-text-l / 0.5 * 1.4)
+    --text-meta: hsl($color-text-h, $color-text-s, 100 - $color-text-l / 0.5 * 1.75)
+    --text-code: hsl($color-code-h, $color-code-s, $color-code-l * 1.25)
+    --blur-bg: alpha(black, .5)
+
+    // waline Dark Color https://github.com/volantis-x/hexo-theme-volantis/issues/633
+    if hexo-config('comments.service') == 'waline'
+      --waline-white: #000
+      --waline-light-grey: #666
+      --waline-dark-grey: #999
+      /* 布局颜色 */
+
+      --waline-color: #fff
+      --waline-bgcolor: var(--block)
+      --waline-bgcolor-light: #272727
+      --waline-border-color: #333
+      --waline-disable-bgcolor: #444
+      --waline-disable-color: #272727
+      /* 特殊颜色 */
+      --waline-bq-color: #272727
+      /* 其他颜色 */
+      --waline-info-bgcolor: #272727
+      --waline-info-color: #666
+
+    if hexo-config('style.theme') == 'card'
+      --card: #292e33
+      --block-2: #292d31
+      --lay-1: #212426 // #202326 // #222325
+      --card-post: #292e33
+      --lineCode-bg: #4d342d
+      --blur-bg: #212426d9 // #26292c8a
+      // 时间线
+      --timeLineNode-bg: #292e33
+      --timeLineReaction-bg: #384451
+      --timeLineFooterLeft-bg: #29455d
+      // copy按钮
+      --copyInput-bg: #2d3135
+      --copyBtn-bg: #343a3f
+      // 字号
+      --text-p0: #ddd
+
+
+  // Custom Files
+  for $injects_darkVar in hexo-config('injects.darkVar')
+    @import $injects_darkVar;
+  // eg:
+  // body
+  //   --color-site-body: blue !important
+
+@media (prefers-color-scheme: dark)
+  :root:not([color-scheme])
+    async_dark()
+    @import 'dark_plugin'
+[color-scheme='dark']
+  async_dark()
+  @import 'dark_plugin'

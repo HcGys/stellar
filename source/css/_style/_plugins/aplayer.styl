@@ -1,0 +1,72 @@
+.md-text
+  .aplayer
+    border-radius: $border-block
+
+
+.aplayer-container
+  display: flex
+  justify-content: center
+  min-height: 100px
+  meting-js
+    max-width: 100%
+
+
+.aplayer
+  max-width: 500px
+  border-radius: 4px
+  color: var(--text-p2)
+  font-family: $ff-body
+  .aplayer-list
+    text-align: left
+  @media screen and (max-width: $device-mobile)
+    border-radius: $border-card
+
+.l_header
+  .aplayer-volume-wrap
+    display: none !important // 隐藏导航栏播放器音量调节 see: https://github.com/volantis-x/hexo-theme-volantis/issues/328
+
+if hexo-config('plugins.aplayer.autoHide')
+  .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body
+    left: -66px !important
+    &:hover
+      left: 0px !important
+
+// .widget-wrapper.music
+.aplayer-container
+  .aplayer
+    background: var(--block)
+    font-family: $ff-body !important
+    border-radius: 6px
+    .aplayer-info
+      border-bottom: 1px solid var(--block-border) !important
+      .aplayer-icon:hover
+        path
+          fill: var(--heo-hovertext) !important
+    .aplayer-lrc
+      .aplayer-lrc-contents
+        padding-top: 5px
+      &:before
+        height: 1px
+        background: var(--text-meta)
+      &:after
+        background: linear-gradient(180deg,hsla(0,0%,100%,0) 0,var(--block))
+    .aplayer-list 
+      ol
+        &::-webkit-scrollbar
+          width: 4px
+        &::-webkit-scrollbar-thumb
+          background-color: $c-blue
+          cursor: pointer
+          border-radius: 2px
+          -webkit-border-radius: 2px
+          &:hover
+            background-color: $c-orange
+        li
+          border-top: 1px solid var(--block-border)
+          &:hover
+            background: var(--block-hover)
+          .aplayer-list-cur
+            border-radius: 4px
+        li.aplayer-list-light
+          background: var(--site-bg)
+

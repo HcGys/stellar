@@ -1,0 +1,30 @@
+<%- partial('_pre') %>
+<% 
+page.robots='noindex,follow'; 
+page.cover=true;
+if (page.menu_id==undefined) { 
+  page.menu_id='post' ; 
+} 
+%>
+<div class="l_main<%- page.sidebar == false ? ' no_sidebar' : '' %>">
+  <% if (site.categories.length) { %>
+    <% page.title=__('btn.categories'); %>
+    <% page.layout='categories' ; %>
+      <div class='post-list categories'>
+        <article class='<%- scrollreveal() %>' id='cats'>
+          <% site.categories.sort('path').each(function(category){ %>
+            <div>
+              <a class="<%= category.parent ? 'cat child' : 'cat'%>" href="<%= url_for(category.path) %>">
+                <span class='name'><%- category.name %></span>
+                <span class='badge'>(<%- category.posts.length %>)</span>
+              </a>
+            </div>
+          <% }) %>
+        </article>
+      </div>
+  <% } %>
+  <!-- 移动端 -->
+  <aside class='mobile-sidebar reveal' layout='<%- page.layout %>'>
+    <%- partial('_partial/widgets/load', {isMobile: true}) %>
+  </aside>
+</div>

@@ -1,0 +1,41 @@
+<%
+let aplayer = theme.plugins.aplayer;
+if (page.show_music == undefined) {
+  page.show_music = true;
+}
+%>
+<% if (page.show_music && aplayer.enable) { %>
+  <% if (aplayer.source == "meting") { %>
+    <% if (page.music) { %>
+      <meting-js
+        mini='true'
+        volume='<%- page.music.volume || aplayer.volume %>'
+        loop='<%- page.music.loop || aplayer.loop %>'
+        order='<%- page.music.order || aplayer.order %>'
+        server='<%- page.music.server || aplayer.server %>'
+        type='<%- page.music.type || aplayer.type %>'
+        id='<%- page.music.id || aplayer.id %>'>
+      </meting-js>
+    <% } else { %>
+      <meting-js
+        theme='<%- aplayer.theme %>'
+        autoplay='<%- aplayer.autoplay %>'
+        volume='<%- aplayer.volume %>'
+        loop='<%- aplayer.loop %>'
+        order='<%- aplayer.order %>'
+        fixed='<%- aplayer.fixed %>'
+        list-max-height='<%- aplayer.list_max_height %>'
+        server='<%- aplayer.server %>'
+        type='<%- aplayer.type %>'
+        id='<%- aplayer.id %>'
+        list-folded='<%- aplayer.list_folded %>'>
+      </meting-js>
+    <% } %>
+  <% } else { %>
+    <% if (page.music) { %>
+      <div class="aplayer-local-min"></div>
+    <% } else { %>
+      <div class="aplayer-local"></div>
+    <% } %>
+  <% } %>
+<% } %>

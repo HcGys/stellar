@@ -1,0 +1,41 @@
+// 根据主题配置加载
+if hexo-config('plugins.lazyload.enable')
+  @import 'lazyload'
+if hexo-config('plugins.swiper.enable')
+  @import 'swiper'
+if hexo-config('plugins.scrollreveal.enable')
+  @import 'scrollreveal'
+if hexo-config('plugins.fancybox.enable')
+  @import 'fancybox'
+if hexo-config('plugins.mermaid.enable')
+  @import 'mermaid'
+if hexo-config('plugins.echarts.enable')
+  @import 'echarts'
+if hexo-config('plugins.copycode.enable')
+  @import 'copycode'
+if hexo-config('plugins.aplayer.enable')
+  @import 'aplayer'
+if hexo-config('plugins.message.enable')
+  @import 'message'
+
+
+// 评论
+if hexo-config('comments.service') == 'beaudar'
+  @import '_comments/beaudar'
+if hexo-config('comments.service') == 'twikoo'
+  @import '_comments/twikoo'
+if hexo-config('comments.service') == 'utterances'
+  @import '_comments/utterances'
+if hexo-config('comments.service') == 'waline'
+  @import '_comments/waline'
+if hexo-config('comments.service') == 'artalk'
+  @import '_comments/artalk'
+
+
+// 右键菜单
+if hexo-config('rightmenu.enable')
+  @import '_rightmenu/*'
+
+// 暗黑模式
+if hexo-config('plugins.darkmode.enable') && hexo-config('plugins.darkmode.type') == 'custom'
+  @import '_dark/dark_async'

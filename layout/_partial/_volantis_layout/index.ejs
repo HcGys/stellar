@@ -1,0 +1,61 @@
+<%- partial('_pre') %>
+<%
+if (page.menu_id == undefined) {
+  page.menu_id = 'post';
+}
+if (page.title && page.wiki) {
+  page.robots = 'noindex,follow';
+}
+
+function layout_post_card(layout, post, content) {
+  var el = '';
+  var layout = layout;
+  if (layout == 'post' && post.cover != undefined && post.poster != undefined) {
+    layout += ' photo';
+  }
+  el += '<a class="post-card ' + layout + ' ' + scrollreveal() + '" href="' + url_for(post.link || post.path) + '">';
+  el += content;
+  el += '</a>';
+  return el;
+}
+
+function layout_posts(partial) {
+  var el = '';
+  el += '<div class="post-list post">';
+  if (is_home()) {
+    // pinned posts
+    if (page.current == 1) {
+      var pinned = site.posts.filter(post => post.pin != undefined).sort((config.index_generator && config.index_generator.order_by) || '-date');
+      pinned.forEach((post, i) => {
+        el += layout_post_card('post', post, partial(post));
+      });
+    }
+    // unpinned posts
+    page.posts.each(function(post){
+      if (post.pin == undefined) {
+        el += layout_post_card('post', post, partial(post));
+      }
+    })
+  } else {
+    page.posts.each(function(post){
+      el += layout_post_card('post', post, partial(post));
+    })
+  }
+  el += '</div>';
+  return el;
+}
+
+%>
+
+<div class="l_main<%- page.sidebar == false ? ' no_sidebar' : '' %>">
+  <% if (page.menu_id === 'post') { %>
+    <%- layout_posts(function(post){
+      return partial('../main/post_list/post_card', {post: post})
+    }) %>
+    <%- partial('../main/post_list/paginator') %>
+  <% } %>
+  <!-- 移动端 -->
+  <aside class='mobile-sidebar reveal' layout='<%- page.layout %>'>
+    <%- partial('_partial/widgets/load', {isMobile: true}) %>
+  </aside>
+</div>

@@ -1,3 +1,18 @@
+navbar:
+  archive: 歸檔
+  category: 分類
+  tag: 標籤
+
+footer:
+  license: '博客內容遵循 [姓名標示-非商業性-相同方式分享 4.0 國際 (CC BY-NC-SA 4.0) 協議](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh_TW)'
+  use: 本站使用
+  theme: 作為主題
+  total_views: 總訪問量為
+  total_visitors: 總訪客量為
+  times: 次
+  site_source: 本站使用 %s 作為主題，您可以在 %s 找到[本站源碼](%s)。
+  site_views: 總訪問量約為 %s 次，訪問人數約為 %s 人。
+
 btn:
   home: 首頁
   blog: 網誌
@@ -19,6 +34,8 @@ meta:
   next: 接下來閱讀
   older: 較早文章
   newer: 較新文章
+  wordcount: '字數：%s字'
+  duration: '時長：%s分鐘'
   references: 參考資料
   related_posts: 您可能感興趣的文章
   comment_title: 參與討論
@@ -45,6 +62,11 @@ search:
   search: 站內搜索
   search_in: 在 %s 中搜索
   no_results: 沒有找到內容！
+  # 以下是volantis布局使用
+  title: 搜尋
+  load_data: 資料庫載入中
+  hits_empty: '找不到您查詢的內容：${query}'
+  hits_stats: '找到 ${hits} 條結果，用時 ${time} 毫秒'
 
 message:
   copied: 複製成功

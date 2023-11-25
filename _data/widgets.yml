@@ -2,6 +2,13 @@
 # layout即组件布局，支持自定义的有：
 # - markdown: 渲染 md 文本
 #
+
+# widget_name:
+#   layout: widget_layout
+#   display: [desktop, mobile]  # volantis布局
+#   sticky: true  # volantis布局
+
+################# default layout 独有 --> start
 search:
   layout: search
   filter: auto # auto or 'path'
@@ -16,15 +23,25 @@ search_docs:
   layout: search
   filter: /wiki/ # auto or 'path'
   placeholder: 文档搜索
-  
+
+######################################--> end
+
 ghrepo:
   layout: ghrepo
+
+
 related:
   layout: related
+  header:
+    icon: fa-duotone fa-chart-network
+    title: 相关
 
 ghissues:
   layout: ghissues
-  title: # Recent Issues
+  header:
+    icon: fa-duotone fa-comments-question-check 
+    title: issues # Recent Issues
+  display: [desktop] # 针对volantis布局
   limit: 3 # 显示的issues最大数量
   labels: # 过滤只显示具有某些标签的issues
 
@@ -32,15 +49,26 @@ ghissues:
 # Recent update
 recent:
   layout: recent
-  rss: # /atom.xml # npm i hexo-generator-feed
+  header:
+    icon: fa-duotone fa-calendar-pen 
+    title: 最近更新
+    rss: /atom.xml # npm i hexo-generator-feed
   limit: 5 # Count of posts
 # TOC (valid only in layout:post/wiki)
 toc:
   layout: toc
+  header:
+    # single_toc_icon: fa-duotone fa-list
+    # mutil_toc_icon: fa-duotone fa-square-list
+    icon: fa-duotone fa-list
+    title: 文章目录
+  pin: true
+  sticky: true
   list_number: false
   min_depth: 2
   max_depth: 5
   fallback: recent # Use a backup widget when toc does not exist.
+
 # github user info
 ghuser:
   layout: ghuser
@@ -50,7 +78,10 @@ ghuser:
 
 tagcloud:
   layout: tagcloud
-  title: 标签云
+  header:
+    title: 标签云
+    icon: fa-duotone fa-tags 
+    url: /blog/tags/
   # 标签云配置
   min_font: 12
   max_font: 24
@@ -64,8 +95,59 @@ tagcloud:
 
 timeline:
   layout: timeline
-  title: 近期动态
+  header:
+    title: 近期动态
+    icon: fa-duotone fa-list-tree
   api: # https://api.github.com/repos/xaoxuu/hexo-theme-stellar/issues
   user: # 默认显示所有人的数据，设置名称可过滤为仅显示某人的数据，多个名称用英文逗号隔开，不要加空格
   type: # 默认不用写，如果是友链朋友圈数据请写 fcircle
   limit: # 默认通过 api 上增加 per_page 来设置，如果是友链朋友圈，可通过这个设置数量
+
+music:
+  layout: music
+  header:
+    icon: fa-duotone fa-music 
+    title: 点歌吧
+
+related_posts:
+  layout: related_posts
+  display: [desktop]
+  header:
+    icon: fa-duotone fa-chart-network 
+    title: 相关文章
+
+################# volantis layout 独有 --> start
+
+blogger:
+  layout: blogger
+  display: [desktop, mobile] # [desktop, mobile]
+  pin: true
+  avatar: https://static.listentothewind.cn/img/avatar.png # https://cdn.jsdelivr.net/gh/volantis-x/cdn-org/blog/Logo-NavBar@3x.png
+  shape: circle # circle, rectangle
+  url: /about/
+  title: 且听风吟
+  subtitle: 君子坐而论道，少年起而行之
+  jinrishici: false # Poetry Today. You can set a string, and it will be displayed when loading fails.
+  social:
+    - icon: fa-duotone fa-rss
+      url: /atom.xml
+    - icon: fa-duotone fa-envelope
+      url: mailto:me@xxx.com
+    - icon: fab fa-github
+      url: https://github.com/volantis-x/
+    - icon: fa-duotone fa-headphones-alt
+      url: /
+
+wiki_logo:
+  layout: wiki_logo
+  display: [desktop, mobile]
+
+wiki_toc:
+  layout: wiki_toc
+  header:
+    icon: fa-duotone fa-square-list
+    title: 文章概要
+  pin: false
+  sticky: true
+
+######################################--> end

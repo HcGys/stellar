@@ -1,0 +1,1 @@
+该文件夹下如果创建styl文件名是'layout.styl'，那么在hexo s时会出现html页面只有head中硬编码进去的'layout.styl'文件中的style标签，其他啥都没有

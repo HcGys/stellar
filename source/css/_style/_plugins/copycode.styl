@@ -1,0 +1,101 @@
+.highlight
+  position: relative
+
+// 旧版样式
+// .highlight .code .copy-btn
+//   position: absolute
+//   top: 0
+//   right: 0
+//   padding: 4px 0.5rem
+//   opacity: 0
+//   font-weight: 700
+//   color: var(--theme)
+//   cursor: pointer
+
+// .highlight:hover .copy-btn 
+//   opacity: 0.25
+
+// .highlight .code .copy-btn:hover
+//   color: var(--theme)
+//   opacity: 0.75
+
+// .highlight .code .copy-btn.success
+//   color: $c-green
+//   opacity: 0.75
+
+// .highlight .code .copy-btn.warning
+//   color: $c-orange
+//   opacity: 0.75
+
+
+.highlight .code-tools
+  display: flex
+  justify-content: space-between
+  align-items: center
+  background: var(--code-tools)
+  font-weight: 500
+  font-size: $fs-codeblock
+  figcaption
+    overflow: hidden
+    white-space: nowrap
+    text-overflow: ellipsis
+  .code-btns-and-lang
+    display: flex
+    justify-content: space-between
+    align-items: center
+    margin-left: 0.5rem
+    .code-lang
+      margin-right: .5rem
+      text-transform: Capitalize
+      color: var(--text-p2)
+      white-space: nowrap
+    .code-btns
+      padding: 4px 0
+      transition: all ease .3s
+      white-space: nowrap
+      > span
+        transition: .2s ease-in-out
+        margin-right: 0.5rem
+        opacity: 0
+        color: var(--theme)
+        cursor: pointer
+        .desc
+          @media screen and (max-width: $device-mobile-375)
+            display: none
+
+.highlight:hover .copy-btn,
+.highlight:hover .fullscreen-btn
+  opacity: 0.45 !important
+
+.highlight .code-tools .code-btns-and-lang .copy-btn:hover,
+.highlight .code-tools .code-btns-and-lang .fullscreen-btn:hover
+  color: var(--theme)
+  opacity: 0.75 !important
+
+.highlight .code-tools .code-btns-and-lang .copy-btn.success
+  color: $c-green
+  opacity: 0.75 !important
+
+.highlight .code-tools .code-btns-and-lang .copy-btn.warning
+  color: $c-orange
+  opacity: 0.75 !important
+
+.highlight.fullscreen
+  // position: fixed
+  // top: 0
+  // left: 0
+  // width: 100%
+  // height: 100%
+  // min-width: 100%
+  // z-index: 9
+  // margin: 0
+  // border-radius: 0
+  // overflow-y: auto
+  // overflow-x: auto
+  table
+    width: 100%
+    height: 100%
+    min-width: 100%
+    overflow: auto
+
+

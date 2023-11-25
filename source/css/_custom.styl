@@ -39,6 +39,9 @@ if hexo-config('style.font-family.logo')
 
 // font size
 $fs-root = convert(hexo-config('style.font-size.root'))
+
+$fs-large = 2.5rem
+
 $fs-15 = .9375rem
 $fs-14 = .875rem
 $fs-13 = .8125rem
@@ -60,6 +63,20 @@ $border-block = convert(hexo-config('style.border-radius.block'))
 $border-bar = convert(hexo-config('style.border-radius.bar'))
 $border-image = convert(hexo-config('style.border-radius.image'))
 $border-button = 4px
+
+// site layout
+$layout-width = convert(hexo-config('style.max_width')) || 1080px
+$sidebar = 260px //240px // 288px
+$modal-threshold = 680px
+$border-searchbar = convert(hexo-config('style.border-radius.searchbar')) || 8px
+$navbar-height = convert(hexo-config('style.navbar.height')) || 64px
+
+// border width
+$border-line = 12px
+
+// gap
+$gap = convert(hexo-config('style.gap.base')) || 16px // base gap
+$gap-p = 1rem
 
 // 可以动态变化的属性
 :root
@@ -92,3 +109,5 @@ $boxshadow-float = 0 4px 8px 0px rgba(0, 0, 0, 0.1)
 $boxshadow-card-float = 0 2px 4px 0px rgba(0, 0, 0, 0.1), 0 4px 8px 0px rgba(0, 0, 0, 0.1), 0 8px 16px 0px rgba(0, 0, 0, 0.1)
 $boxshadow-button = 0 0 2px 0px rgba(0, 0, 0, 0.04), 0 0 8px 0px rgba(0, 0, 0, 0.04)
 $boxshadow-block = 0 1px 4px 0px rgba(0, 0, 0, 0.02), 0 2px 8px 0px rgba(0, 0, 0, 0.02)
+// $boxshadow-dropmenu = 0 2px 4px 0px rgba(0, 0, 0, 0.08), 0 4px 8px 0px rgba(0, 0, 0, 0.08), 0 8px 16px 0px rgba(0, 0, 0, 0.08)
+$boxshadow-dropmenu = rgba(50, 50, 105, 0.15) 0px 2px 5px 0px, rgba(0, 0, 0, 0.05) 0px 1px 1px 0px

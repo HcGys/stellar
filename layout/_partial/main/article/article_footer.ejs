@@ -1,114 +1,257 @@
 <%
-function layoutDiv() {
-  var el = '';
-  var item = [];
-  if (page.references && page.references.length > 0) {
-    item.push('references');
+var item = [];
+if (page.references && page.references.length > 0) {
+  item.push('references');
+}
+if (page.layout !== 'wiki') {
+  if (theme.article.license && theme.article.license.length > 0) {
+    item.push('license');
   }
-  if (page.layout !== 'wiki') {
-    if (theme.article.license && theme.article.license.length > 0) {
-      item.push('license');
-    }
-    if (theme.article.share && theme.article.share.length > 0) {
-      item.push('share');
-    }
+  if (theme.article.body.footer_widget.share && theme.article.body.footer_widget.share.length > 0) {
+    item.push('share');
   }
-  if (item.length === 0) {
-    return el;
-  }
-  el += '<div class="article-footer reveal fs14">';
-  if (page.references && page.references.length > 0) {
-    el += '<section id="references">';
-    el += '<div class="header">';
-    el += '<span>' + __('meta.references') + '</span>';
-    el += '</div>';
-    el += '<div class="body"><ul>';
-    page.references.forEach((item, i) => {
-      el += '<li class="post-title">';
-      el += '<a href="' + item.url + '"';
-      if (item.url.includes('://')) {
-        el += ' target="_blank" rel="external nofollow noopener noreferrer">';
-      } else {
-        el += ' rel="noopener noreferrer">';
-      }
-      el += item.title || item.url;
-      el += '</a>';
-      el += '</li>';
-    });
-    el += '</ul></div>';
-    el += '</section>';
-  }
-
-  if (page.layout == 'post') {
-    if (theme.article.license && page.license != false) {
-      el += '<section id="license">';
-      el += '<div class="header">';
-      el += '<span>' + __('meta.license') + '</span>';
-      el += '</div>';
-      el += '<div class="body">';
-      el += markdown(page.license || theme.article.license);
-      el += '</div>';
-      el += '</section>';
-    }
-
-    if (theme.article.share && page.share != false) {
-      el += '<section id="share">';
-      el += '<div class="header">';
-      el += '<span>' + __('meta.share') + '</span>';
-      el += '</div>';
-      el += '<div class="body">';
-      el += '<div class="link"><input class="copy-area" readonly="true" id="copy-link" value="' + page.permalink + '" /></div>';
-      el += '<div class="social-wrap dis-select">';
-      theme.article.share.forEach((item, i) => {
-        if (['wechat', 'weibo', 'email', 'link'].includes(item)) {
-          el += '<a class="social share-item ' + item + '"';
-          if (item == 'weibo') {
-            el += ' target="_blank" rel="external nofollow noopener noreferrer"';
-          }
-          if (item == 'wechat') {
-            el += ' onclick="util.toggle(&quot;qrcode-wechat&quot)"';
-          } else if (item == 'weibo') {
-            el += ' href="https://service.weibo.com/share/share.php?url=' + page.permalink;
-            el += '&title=' + (page.seo_title || (page.title + ' - ' + config.title));
-            if (page.layout == 'post' && page.cover) {
-              el += '&pics=' + page.cover;
-            } else if (page.layout == 'wiki' && page.logo && page.logo.src) {
-              el += '&pics=' + page.logo.src;
-            }
-            el += '&summary=' + truncate(page.description || strip_html(page.excerpt || page.content), {length: 120});
-            el += '"';
-          } else if (item == 'email') {
-            el += ' href="mailto:?subject=' + ((page.title + ' - ' + config.title) || page.seo_title) + '&amp;'
-            el += 'body=' + page.permalink + '"';
-          } else if (item == 'link') {
-            el += ' onclick="util.copy(&quot;copy-link&quot;, &quot;' + __('message.copied') + '&quot;)"';
-          }
-          el += '>';
-          if (item == 'wechat') {
-            el += '<img src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.4/social/b32ef3da1162a.svg"/>';
-          } else if (item == 'weibo') {
-            el += '<img src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.4/social/80c07e4dbb303.svg"/>';
-          } else if (item == 'email') {
-            el += '<img src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.4/social/a1b00e20f425d.svg"/>';
-          } else if (item == 'link') {
-            el += '<img src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.4/social/8411ed322ced6.svg"/>';
-          }
-          el += '</a>';
-        }
-      });
-      el += '</div>';
-      if (theme.article.share.includes('wechat')) {
-        el += '<div class="qrcode" id="qrcode-wechat" style="visibility:hidden;height:0">';
-        el += '<img src="https://api.qrserver.com/v1/create-qr-code/?size=256x256&data=' + page.permalink + '"/>';
-        el += '</div>';
-      }
-      el += '</div>';
-      el += '</section>';
-    }
-  }
-
-  el += '</div>';
-  return el;
+}
+if (typeof page.meta_bottom === 'undefined' || page.meta_bottom === true || page.meta_bottom.length > 0 || (theme.article.body.meta_bottom && theme.article.body.meta_bottom.length > 0)) {
+  item.push('meta_bottom');
 }
 %>
-<%- layoutDiv(); %>
+
+<% if (item.length !== 0) { %>
+  <% let footer_widget = theme.article.body.footer_widget; %>
+  <div class="article-footer reveal fs14">
+    <!-- <% if (page.references && page.references.length > 0) { %>
+      <section id="references">
+        <div class="header">
+          <span>
+            <%- __('meta.references') %>
+          </span>
+        </div>
+        <div class="body">
+          <ul>
+          <% page.references.forEach((item, i) => { %>
+            <li class="post-title">
+              <a href='<%- item.url %>'<%- item.url.includes('://') ? ' target="_blank" rel="external nofollow noopener noreferrer">' : ' rel="noopener noreferrer">' %>'
+              <%- item.title || item.url %>
+              </a>
+            </li>
+          <% }); %>
+          </ul>
+        </div>
+      </section>
+    <% } %> -->
+
+    <!-- 参考资料、相关资料等 -->
+    <% if (item.includes('references') && page.references && page.references.length > 0) { %>
+      <section id="references">
+        <div class="header">
+          <% if (footer_widget.references.icon) { %>
+            <i class="<%- footer_widget.references.icon %> fa-fw" aria-hidden="true"></i>
+          <% } %>
+          <span><%- footer_widget.references.title %></span>
+        </div>
+        <div class="body">
+          <ul>
+          <% (page.references||[]).forEach((item, i) => { %>
+            <li class="post-title">
+              <a href='<%- item.url %>'<%- item.url.includes('://') ? ' target="_blank" rel="external nofollow noopener noreferrer">' : ' rel="noopener noreferrer">' %>
+              <%- item.title || item.url %>
+              </a>
+            </li>
+          <% }); %>
+          </ul>
+        </div>
+      </section>
+    <% } %>
+  
+    <!-- <% if (page.layout == 'post') { %>
+      <% if (theme.article.license && page.license != false) { %>
+        <section id="license">
+          <div class="header">
+            <span><%- __('meta.license') %></span>
+          </div>
+          <div class="body">
+            <%- markdown(page.license || theme.article.license) %>
+          </div>
+        </section>
+      <% } %>
+    <% } %> -->
+
+      <!-- 版权声明组件 -->
+      <% if (item.includes('license') && ['post'].includes(page.layout) && footer_widget.copyright && footer_widget.copyright.enable == true && page.copyright != false) { %>
+        <% if (footer_widget.copyright.custom) { %>
+          <%
+            let author = theme.article.body.meta_library.author;
+            let aid = page.author;
+            if (aid && site.data && site.data.author && (aid in site.data.author)) {
+              author = site.data.author[aid];
+            }
+            let articleCreate =  date(page.date, theme.article.body.meta_library.date.format);
+            let articleUpdate = date(page.updated, theme.article.body.meta_library.updated.format);
+            let copyrightRule = page.copyright?.type || theme.article.body.footer_widget.copyright.customData.default;
+            let copyrightRuleText = theme.article.body.footer_widget.copyright.customData.rules[copyrightRule]?.text;
+            let copyrightRuleDesc = theme.article.body.footer_widget.copyright.customData.rules[copyrightRule]?.desc;
+          %>
+          <section id="license">
+            <div class="header">
+              <span><%- __('meta.license') %></span>
+            </div>
+            <div class="body">
+              <div class="copyright license">
+                <div class="license-title"><%- page.title %></div>
+                <div class="license-link"><a href="<%- decodeURI(page.permalink) %>"><%- decodeURI(page.permalink) %></a>
+                </div>
+                <div class="license-meta">
+                  <div class="license-meta-item">
+                    <div class="license-meta-title"><%- __('meta.copyright.author') %></div>
+                    <div class="license-meta-text"><%- page.copyright?.author || author.name %></div>
+                  </div>
+                  <div class="license-meta-item">
+                    <div class="license-meta-title"><%- __('meta.copyright.date') %></div>
+                    <div class="license-meta-text"><%- articleCreate %></div>
+                  </div>
+                  <% if (articleCreate !== articleUpdate) { %>
+                  <div class="license-meta-item">
+                    <div class="license-meta-title"><%- __('meta.copyright.updated') %></div>
+                    <div class="license-meta-text"><%- articleUpdate %></div>
+                  </div>
+                  <% } %>
+                  <% if (page.copyright?.ref?.title) { %>
+                  <div class="license-meta-item">
+                    <div class="license-meta-title"><%- __('meta.copyright.references') %></div>
+                    <div class="license-meta-text">
+                      <a href="<%- page.copyright.ref?.url %>" target="_blank"><%- page.copyright.ref?.title %></a>
+                    </div>
+                  </div>
+                  <% } %>
+                  <div class="license-meta-item">
+                    <div class="license-meta-title"><%- __('meta.copyright.license') %></div>
+                    <div class="license-meta-text"><%- copyrightRuleText %></div>
+                  </div>
+                </div>
+                <div class="license-statement"><%- copyrightRuleDesc %></div>
+              </div>
+            </div>
+          </section>
+          <!-- <div class="copyright license">
+            <div class="license-title"><%- page.title %></div>
+            <div class="license-link"><a href="<%- decodeURI(page.permalink) %>"><%- decodeURI(page.permalink) %></a>
+            </div>
+            <div class="license-meta">
+              <div class="license-meta-item">
+                <div class="license-meta-title"><%- __('page.copyright.author') %></div>
+                <div class="license-meta-text"><%- page.copyright?.author || author.name %></div>
+              </div>
+              <div class="license-meta-item">
+                <div class="license-meta-title"><%- __('page.copyright.date') %></div>
+                <div class="license-meta-text"><%- articleCreate %></div>
+              </div>
+              <% if (articleCreate !== articleUpdate) { %>
+              <div class="license-meta-item">
+                <div class="license-meta-title"><%- __('page.copyright.updated') %></div>
+                <div class="license-meta-text"><%- articleUpdate %></div>
+              </div>
+              <% } %>
+              <% if (page.copyright?.ref?.title) { %>
+              <div class="license-meta-item">
+                <div class="license-meta-title"><%- __('page.copyright.references') %></div>
+                <div class="license-meta-text">
+                  <a href="<%- page.copyright.ref?.url %>" target="_blank"><%- page.copyright.ref?.title %></a>
+                </div>
+              </div>
+              <% } %>
+              <div class="license-meta-item">
+                <div class="license-meta-title"><%- __('page.copyright.license') %></div>
+                <div class="license-meta-text"><%- copyrightRuleText %></div>
+              </div>
+            </div>
+            <div class="license-statement"><%- copyrightRuleDesc %></div>
+          </div> -->
+        <% } else { %>
+          <section id="license">
+            <div class="header">
+              <span><%- __('meta.license') %></span>
+            </div>
+            <div class="body">
+              <div class='copyright'>
+                <% (footer_widget.copyright.content||[]).forEach(function(row){ %>
+                  <% if (row == 'permalink') { %>
+                    <p><%- footer_widget.copyright.permalink %><a href="<%- decodeURI(page.permalink) %>"><%- decodeURI(page.permalink) %></a></p>
+                  <% } else { %>
+                    <%- markdown(row) %>
+                  <% } %>
+                <% }) %>
+              </div>
+            </div>
+          </section>
+          <!-- <div class='copyright'>
+            <blockquote>
+              <% (footer_widget.copyright.content||[]).forEach(function(row){ %>
+                <% if (row == 'permalink') { %>
+                  <p><%- footer_widget.copyright.permalink %><a href="<%- decodeURI(page.permalink) %>"><%- decodeURI(page.permalink) %></a></p>
+                <% } else { %>
+                  <%- markdown(row) %>
+                <% } %>
+              <% }) %>
+            </blockquote>
+          </div> -->
+        <% } %>
+      <% } %>
+
+      <!-- 分享组件 -->
+      <% if (item.includes('share') && theme.article.body.footer_widget.share && page.share != false) { %>
+        <section id="share">
+          <div class="header">
+            <span><%- __('meta.share') %></span>
+          </div>
+          <div class="body">
+            <div class="link">
+              <input class="copy-area" readonly="true" id="copy-link" value="<%- decodeURI(page.permalink) %>" />
+            </div>
+            <div class="social-wrap dis-select">
+              <% theme.article.body.footer_widget.share.forEach((item, i) => { %>
+                <% if (['wechat', 'weibo', 'email', 'link'].includes(item)) { %>
+                  <% if (item == 'wechat') { %>
+                    <a class="social share-item <%- item %>" onclick="util.toggle(&quot;qrcode-wechat&quot)">
+                      <img src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.4/social/b32ef3da1162a.svg"/>
+                    </a>
+                  <% } else if (item == 'weibo') { %>
+                    <% 
+                      let pics = '';
+                      if (page.layout == 'post' && page.cover) {
+                        pics = page.cover;
+                      } else if (page.layout == 'wiki' && page.logo && page.logo.src) {
+                        pics = page.logo.src;
+                      }
+                    %>
+                    <a class="social share-item <%- item %>" target="_blank" rel="external nofollow noopener noreferrer" href="https://service.weibo.com/share/share.php?url=<%- page.permalink %>&title=<%- (page.seo_title || (page.title + ' - ' + config.title)) %>&pics=<%- pics %>&summary=<%- truncate(page.description || strip_html(page.excerpt || page.content), {length: 120}) %>">
+                      <img src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.4/social/80c07e4dbb303.svg"/>
+                    </a>
+                  <% } else if (item == 'email') { %>
+                    <a class="social share-item <%- item %>" href="mailto:?subject=<%- ((page.title + ' - ' + config.title) || page.seo_title) %>&amp;body=<%- page.permalink %>">
+                      <img src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.4/social/a1b00e20f425d.svg"/>
+                    </a>
+                  <% } else if (item == 'link') { %>
+                    <!-- 原生弹窗 -->
+                    <!-- el += ' onclick="util.copy(&quot;copy-link&quot;, &quot;' + __('message.copied') + '&quot;)"'; -->
+                    <a class="social share-item <%- item %>" onclick="util.messageCopyright()">
+                      <img src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.4/social/8411ed322ced6.svg"/>
+                    </a>
+                  <% } %>
+                <% } %>
+              <% }); %>
+            </div>
+            <% if (theme.article.body.footer_widget.share.includes('wechat')) { %>
+              <div class="qrcode" id="qrcode-wechat" style="visibility:hidden;height:0">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=256x256&data=' + page.permalink + '"/>
+              </div>
+            <% } %>
+          </div>
+        </section>
+      <% } %>
+  
+  </div>
+  <!-- 文章meta -->
+  <% if (item.includes('meta_bottom') && ['page', 'post', 'wiki'].includes(page.layout)) { %>
+    <%- partial('../../../meta', {post: page, position: 'bottom'}) %>
+  <% } %>
+<% } %>

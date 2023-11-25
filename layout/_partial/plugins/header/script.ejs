@@ -1,0 +1,35 @@
+<!-- 针对volantis布局 -->
+<script>
+    // 暗黑模式
+    function dark_header_icon() {
+        let ic_light,ic_dark,ic_lightname,ic_darkname;
+        if (stellar.isMobile) {
+            ic_light = document.querySelector('.switcher.nav-list-h.m-phone .toggle-mode-btn .icon.light');
+            ic_dark = document.querySelector('.switcher.nav-list-h.m-phone .toggle-mode-btn .icon.dark');
+            ic_lightname = document.querySelector('.switcher.nav-list-h.m-phone .toggle-mode-btn .light.name');
+            ic_darkname = document.querySelector('.switcher.nav-list-h.m-phone .toggle-mode-btn .dark.name');
+        } else {
+            ic_light = document.querySelector('.toggle-mode-btn .icon.light');
+            ic_dark = document.querySelector('.toggle-mode-btn .icon.dark');
+            ic_lightname = document.querySelector('.toggle-mode-btn .light.name');
+            ic_darkname = document.querySelector('.toggle-mode-btn .dark.name');
+        }
+        if (stellar.dark.mode === 'light') {
+            ic_dark.style.display = "none";
+            ic_darkname.style.display = "none";
+            ic_light.removeAttribute('style');
+            ic_lightname.removeAttribute('style');
+        } else {
+            ic_dark.removeAttribute('style');
+            ic_darkname.removeAttribute('style');
+            ic_light.style.display = "none";
+            ic_lightname.style.display = "none";
+        }
+        
+    }
+    window.addEventListener('DOMContentLoaded', (event) => {
+        dark_header_icon();
+    });
+    stellar.dark.push(dark_header_icon);
+</script>
+  

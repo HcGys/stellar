@@ -14,7 +14,7 @@ function div_default() {
   el += '<article class="md-text">';
 
   // 封面
-  if (obj.image || theme.article.auto_cover) {
+  if (obj.image || theme.article.preview.auto_cover) {
     var cover_url;
     if (obj.image != undefined) {
       if (obj.image.includes('/')) {
@@ -60,7 +60,7 @@ function div_default() {
     el += strip_html(post.excerpt);
   } else if (post.description) {
     el += post.description;
-  } else if (post.content && theme.article.auto_excerpt > 0) {
+  } else if (post.content && theme.article.preview.auto_excerpt > 0) {
     el += truncate(strip_html(post.content), {length: theme.article.auto_excerpt});
   }
   el += '</p>';

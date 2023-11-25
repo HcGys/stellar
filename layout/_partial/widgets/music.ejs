@@ -1,0 +1,56 @@
+<%
+function layoutDiv() {
+    var el = '';
+    if (!theme.plugins.aplayer.enable) {
+        return el;
+    }
+    let aplayer = theme.plugins.aplayer;
+    el += '<widget class="widget-wrapper music">';
+    // if (item.title) {
+    //     el += '<div class="widget-header cap theme dis-select">';
+    //     el += '<span class="name">' + item.title + '</span>';
+    //     el += '</div>';
+    // }
+    el += partial('header', {item: item});
+    el += '<div class="widget-body fs14">';
+    el += '<div class="aplayer-container">'
+    if (aplayer.source == "meting") {
+        if (page.music) {
+           el += '<meting-js mini="true" volume="' + page.music.volume || aplayer.volume + '" loop="' + page.music.loop || aplayer.loop + '" order="' + page.music.order || aplayer.order + '" server="' + page.music.server || aplayer.server + '" type="' + page.music.type || aplayer.type + '" id="' + page.music.id || aplayer.id + '">' + '</meting-js>'
+        } else {
+            el += '<meting-js theme="' + aplayer.theme + '" autoplay="' + aplayer.autoplay + '" volume="' + aplayer.volume + '" loop="' + aplayer.loop + '" order="' + aplayer.order + '" fixed="' + aplayer.fixed + '" list-max-height="' + aplayer.list_max_height + '" server="' + aplayer.server + '" type="' + aplayer.type + '" id="'+ aplayer.id + '" list-folded="' + aplayer.list_folded + '">' + '</meting-js>'
+        }
+    } else {
+        if (page.music) {
+          el += '<div class="aplayer-local-min"></div>'
+        } else {
+          el += '<div class="aplayer-local"></div>'
+        }
+    }
+    el += '</div>'
+    el += '</div>';
+    el += '</widget>';
+    return el;
+}
+%>
+
+<% if (theme.plugins.aplayer && theme.plugins.aplayer.enable && !page.hasLoadAplayer) { %>
+    <%- partial('../plugins/aplayer/script') %>
+    <% page.hasLoadAplayer = true; %>
+<% } %>
+<%- layoutDiv() %>
+
+<!-- <% if (theme.plugins.aplayer.enable == true) { %>
+    <widget class="widget-wrapper music">
+        <% if (item.title) { %>
+            <div class="widget-header cap theme dis-select">
+                <span class="name">' + item.title + '</span>
+            </div>
+        <% } %>
+        <div class="widget-body fs14">
+            <div class='content'>
+                <%- partial('../plugins/aplayer/layout', {post: null, where: 'widget'}) %>
+              </div>
+        </div>
+      </widget>
+  <% } %> -->

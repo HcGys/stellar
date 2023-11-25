@@ -89,6 +89,19 @@ function og_args() {
   
   <title><%- generate_title() %></title>
 
+  <!-- import head_begin begin -->
+  <%_ if (config.import && config.import.head_begin){ _%>
+    <%_ ([...config.import.head_begin]).forEach(function(item){ _%>
+      <%- item %>
+    <%_ }) _%>
+  <%_ } _%>
+  <!-- import head_begin end -->
+  <!-- Custom Files headBegin begin-->
+  <%- stellar_inject('headBegin') %>
+  <!-- Custom Files headBegin end-->
+
+  <link rel="preload" href="<%- theme.cdn.stellar_style %>" as="style">
+
   <% if (theme.open_graph && theme.open_graph.enable) { %>
     <%- open_graph(og_args()) %>
   <% } %>
@@ -101,11 +114,13 @@ function og_args() {
     <%- feed_tag(config.feed.path, {title: config.title}) %>
   <% } %>
 
-  <% if (theme.stellar.cdn_css) { %>
-    <%- css(theme.stellar.cdn_css) %>
-  <% } else { %>
-    <%- css('/css/main.css') %>
-  <% } %>
+  <style>
+    /* 首屏样式 */
+    <%- FirstCSS() %>
+  </style>
+
+  <link rel="stylesheet" href="<%- theme.cdn.stellar_style %>">
+  <noscript><link rel="stylesheet" href="<%- theme.cdn.stellar_style %>"></noscript>
 
   <% if (config.favicon) { %>
     <%- favicon_tag(config.favicon) %>
@@ -120,11 +135,55 @@ function og_args() {
     <%- theme.plugins.katex.min_js %>
     <%- theme.plugins.katex.auto_render_min_js %>
   <% } %>
+  <script>
+    <% if (theme.plugins.darkmode && theme.plugins.darkmode.enable) { %>
+      let userColorScheme=localStorage.getItem("color-scheme");
+      if(userColorScheme){
+        document.documentElement.setAttribute("color-scheme", userColorScheme);
+      }
+    <% } %>
 
+    document.addEventListener("error", function(e) {
+      const elem = e.target;
+      const parentElem = e.target.parentElement;
+      const parentElemClass = parentElem.classList.toString();
+      const pNextElem = parentElem.nextSibling;
+      
+      if (elem.tagName.toLowerCase() !== 'img' || elem.getAttribute('onerror')) {
+          return;
+      }
+      elem.classList.add('fix-cursor-default', 'error');
+      elem.style.display = 'none';
+      if (parentElemClass === 'image-bg' && pNextElem) {
+        pNextElem.style.display = 'none';
+      }
 
-  <% if (config.inject && config.inject.head){ %>
+      const error_show = document.createElement('div');
+      error_show.classList.add('error-img-to-show');
+
+      elem.getAttribute('alt') ? error_show.setAttribute('alt', elem.getAttribute('alt')) : error_show.setAttribute('alt', '加载错误！');
+
+      parentElem.insertBefore(error_show, elem);
+
+    }, true);
+  </script>
+  <%- partial('./scripts/global') %>
+
+  <!-- <% if (config.inject && config.inject.head){ %>
     <% (config.inject.head||[]).forEach(function(item){ %>
       <%- item %>
     <% }) %>
-  <% } %>
+  <% } %> -->
+
+  <!-- import head_end begin -->
+  <%_ if (config.import && config.import.head_end){ _%>
+    <%_ ([...config.import.head_end]).forEach(function(item){ _%>
+      <%- item %>
+    <%_ }) _%>
+  <%_ } _%>
+  <!-- import head_end end -->
+  <!-- Custom Files headEnd begin-->
+  <%- stellar_inject('headEnd') %>
+  <!-- Custom Files headEnd end-->
+
 </head>

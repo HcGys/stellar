@@ -1,0 +1,33 @@
+first_darkmode()
+  --site-bg: hsl($color-background-h, $color-background-s * 0.5, (100 - $color-background-l) * 2 + 8)
+  --card: hsl($color-block-h, $color-block-s * 1.2, 24)
+  --block: hsl($color-block-h, $color-block-s, 16)
+  --block-border: hsl($color-block-h, $color-block-s, 24)
+  --block-hover: hsl($color-block-h, $color-block-s, 20)
+  --img-error-bg: #292c2f  // #34383b
+  --img-error-text-bg: #313437 // #3d4145
+  --search-blur-bg: #292e3380 // rgb(41 46 51 / 50%)
+  --code-tools: #2c3035bb
+  set_text_light()
+  // @media screen and (max-width: $device-mobile-max)
+  //   --site-bg: black
+
+if hexo-config('style.darkmode') == 'auto'
+  // 系统的dark模式
+  @media (prefers-color-scheme: dark)
+    :root
+      first_darkmode()
+
+
+if hexo-config('style.darkmode') == 'always'
+  :root
+    first_darkmode()
+
+if hexo-config('plugins.darkmode.enable') && hexo-config('plugins.darkmode.type') == 'custom'
+  @media (prefers-color-scheme: dark)
+    :root
+      --color-mode: 'dark'
+    :root:not([color-scheme])
+      first_darkmode()
+  [color-scheme='dark']
+    first_darkmode()

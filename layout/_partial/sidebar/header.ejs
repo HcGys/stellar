@@ -25,6 +25,9 @@ function layoutDiv() {
   if (page.layout == 'wiki' && page.menu_id == 'wiki') {
     return el;
   }
+  if (theme.style.layout !== 'default') {
+    return el;
+  }
   el += '<header class="header';
   if (where == 'main') {
     el += ' mobile-only';

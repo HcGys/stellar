@@ -1,0 +1,23 @@
+<% if (theme.plugins.fancybox) { %>
+    <script>
+        let selector = 'img[fancybox]:not(.error)';
+        if (stellar.GLOBAL_CONFIG.plugins.fancybox.selector) {
+            selector += `, ${stellar.GLOBAL_CONFIG.plugins.fancybox.selector}`
+        }
+        if (document.querySelectorAll(selector).length !== 0) {
+            stellar.loadCSS(stellar.GLOBAL_CONFIG.plugins.fancybox.css);
+            stellar.loadScript(stellar.GLOBAL_CONFIG.plugins.fancybox.js, { defer: true }).then(function () {
+                Fancybox.bind(selector, {
+                groupAll: true,
+                hideScrollbar: false,
+                Thumbs: {
+                    autoStart: false,
+                },
+                caption: function (fancybox, carousel, slide) {
+                    return slide.$trigger.alt || null
+                }
+                });
+            });
+        }
+    </script>
+<% } %>

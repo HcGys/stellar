@@ -1,0 +1,38 @@
+<% if (theme.related_posts.enable) { %>
+    <%- partial('_pre', {item: item}) %>
+    <% 
+        let popular_posts = popular_posts_json({ maxCount: theme.related_posts.max_count , ulClass: 'related-posts' , PPMixingRate: 0.2 , isImage: true , isExcerpt: true} , page ) 
+    %>
+
+    <% if (popular_posts.json && popular_posts.json.length > 0) { %>
+        <widget class="widget-wrapper related-posts <%- page.widget_platform %> <%- page.widget_pin %>">
+            <%- partial('header', {item: item}) %>
+            <div class="widget-body related-posts fs14">
+                <div class="popular-posts">
+                    <% popular_posts.json.forEach(popular_post => { %>
+                        <a class="popular-posts-item" href="<%- popular_post.path %>" title="<%- popular_post.title %>">
+                            <% if (popular_post.date && popular_post.date != '') { %>
+                                <span class="popular-posts-date">
+                                    <%- popular_post.date %>
+                                </span>
+                            <% } %>
+                            <% if (popular_post.img && popular_post.img != '') { %>
+                                <span class="popular-posts-img">
+                                    <img src="<%- popular_post.img %>" />
+                                </span>
+                            <% } %>
+                            <span class="popular-posts-title">
+                                <%- popular_post.title %>
+                            </span>
+                            <% if (popular_post.excerpt && popular_post.excerpt != '') { %>
+                                <span class="popular-posts-excerpt">
+                                    <%- popular_post.excerpt.replace('<p>', '').replace('</p>', '') %>
+                                </span>
+                            <% } %>
+                        </a>
+                    <% }); %>
+                </div>
+            </div>
+        </widget>
+    <% } %>
+<% } %>

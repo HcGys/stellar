@@ -1,0 +1,19 @@
+<% if (theme.plugins.preload) { %>
+    <script>
+        if (stellar.GLOBAL_CONFIG.plugins.preload.service == 'instant_page') {
+            stellar.loadScript(stellar.GLOBAL_CONFIG.plugins.preload.instant_page, {
+                defer: true,
+                type: 'module',
+                integrity: 'sha384-OeDn4XE77tdHo8pGtE1apMPmAipjoxUQ++eeJa6EtJCfHlvijigWiJpD7VDPWXV1'
+            })
+        } else if (stellar.GLOBAL_CONFIG.plugins.preload.service == 'flying_pages') {
+            window.FPConfig = {
+                delay: 0,
+                ignoreKeywords: [],
+                maxRPS: 5,
+                hoverDelay: 25
+            };
+            stellar.loadScript(stellar.GLOBAL_CONFIG.plugins.preload.flying_pages, { defer: true })
+        }
+    </script>
+<% } %>

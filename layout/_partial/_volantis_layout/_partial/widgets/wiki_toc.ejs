@@ -1,0 +1,70 @@
+<%- partial('_pre', {item: item, isMobile: isMobile}) %>
+<%
+let proj = theme.wiki.projects[page.wiki];
+let inputMark = isMobile ? 'mobile' : 'desktop';
+%>
+
+<widget class="widget-wrapper wiki-toc <%- page.widget_platform %> <%- page.widget_pin %>" id="data-toc">
+    <% if (item.header) { %>
+        <% item.header.title = (proj.toc_title || item.header.title || __("meta.toc")) %>
+        <%- partial('header', {item: item}) %>
+    <% } %>
+    <div class="widget-body fs14">
+        <% if (proj.sections && proj.sections.length > 0) { %>
+            <script>
+                function sectionOnclick(sec) {
+                    let status = sec.getAttribute('status');
+                    if (status === 'checked'){
+                        sec.checked = false;
+                        sec.setAttribute('status', 'unchecked');
+                    }else{
+                        sec.checked = true;
+                        sec.setAttribute('status', 'checked');
+                    }
+                    sec.parentElement.parentElement.querySelectorAll('input[type="radio"]').forEach(ipt => {
+                        if (ipt.getAttribute('id') !== sec.getAttribute('id')) {
+                            ipt.checked = false;
+                            ipt.setAttribute('status', 'unchecked');
+                        }
+                    });
+                }
+            </script>
+            <% proj.sections.forEach((sec, i) => { %>
+              <!-- 多 section -->
+                <div class="section-wrap">
+                    <% if (page.order >= sec.from && page.order <= sec.to) { %>
+                        <input type="radio" id="<%- inputMark %>-section-<%- i %>" checked="checked" status="checked" onclick="sectionOnclick(this)" name="section">
+                    <% } else { %>
+                        <input type="radio" id="<%- inputMark %>-section-<%- i %>" status="unchecked" onclick="sectionOnclick(this)" name="section">
+                    <% } %>
+                    
+                    <label class="section-label" for="<%- inputMark %>-section-<%- i %>">
+                        <div><%- sec.title %></div>
+                    </label>
+                    <% if (sec.pages.length > 0) { %>
+                        <div class="child-articles">
+                            <% sec.pages.forEach((atc, j) => { %>
+                                <a class="atc-link" href="<%- url_for(atc.path) %>">
+                                    <span class="toc-text"><%- (atc.title || atc.seo_title) %></span>
+                                </a>
+                            <% }) %>
+                        </div>
+                    <% } %>
+                </div>
+            <% }) %>
+        <% } else { %>
+            <!-- 单 section -->
+           
+            <div class="section-wrap single">
+                <div class="child-articles">
+                <% proj.pages.forEach((atc, i) => { %>
+                    <a class="atc-link" href="<%- url_for(atc.path) %>">
+                        <span class="toc-text"><%- (atc.title || atc.seo_title) %></span>
+                    </a>
+                <% }) %>
+                </div>
+            </div>
+              
+        <% } %>
+    </div>
+</widget>

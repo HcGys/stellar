@@ -1,21 +1,53 @@
-<!DOCTYPE html>
-<html lang='<%- page.lang %>'>
-<%- partial('_partial/head') %>
-<body>
-  <%- partial('_partial/cover/index') %>
-  <div class='l_body' id='start'>
-    <aside class='l_left' layout='<%- page.layout %>'>
-    <%- partial('_partial/sidebar/index') %>
-    </aside>
-    <div class='l_main<%- page.content ? "" : " list" %>'>
-      <%- partial('_partial/main/header/index') %>
-      <%- body %>
-      <%- partial('_partial/main/footer') %>
-      <%- partial('_partial/menubtn') %>
+<% if (theme.style.layout === 'default') { %>
+  <!DOCTYPE html>
+  <html lang='<%- page.lang %>'>
+  <%- partial('_partial/head') %>
+  <body>
+  
+    <!-- import body_begin begin-->
+    <%_ if (config.import && config.import.body_begin){ _%>
+      <%_ ([...config.import.body_begin]).forEach(function(item){ _%>
+        <%- item %>
+      <%_ }) _%>
+    <%_ } _%>
+    <!-- import body_begin end-->
+    <!-- Custom Files bodyBegin begin-->
+    <%- stellar_inject('bodyBegin') %>
+    <!-- Custom Files bodyBegin end-->
+  
+    <%- partial('_partial/bodyBegin') %>
+  
+    <%- partial('_partial/cover/index') %>
+    <div class='l_body' id='start'>
+      <aside class='l_left' layout='<%- page.layout %>'>
+      <%- partial('_partial/sidebar/index') %>
+      </aside>
+      <div class='l_main<%- page.content ? "" : " list" %>'>
+        <%- partial('_partial/main/header/index') %>
+        <%- body %>
+        <%- partial('_partial/main/footer') %>
+        <%- partial('_partial/menubtn') %>
+      </div>
     </div>
-  </div>
-  <div class='scripts'>
-    <%- partial('_partial/scripts/index') %>
-  </div>
-</body>
-</html>
+  
+    <div class="rmMask"></div>
+    <div class='scripts'>
+      <%- partial('_partial/scripts/index') %>
+    </div>
+  
+    <!-- import body_end begin -->
+    <%_ if (config.import && config.import.body_end){ _%>
+      <%_ ([...config.import.body_end]).forEach(function(item){ _%>
+        <%- item %>
+      <%_ }) _%>
+    <%_ } _%>
+    <!-- import body_end end-->
+    <!-- Custom Files bodyEnd begin-->
+    <%- stellar_inject('bodyEnd') %>
+    <!-- Custom Files bodyEnd end-->
+  
+  </body>
+  </html>
+<% } else if (theme.style.layout === 'volantis') { %>
+  <%- partial('./_partial/_volantis_layout/layout') %>
+<% } %>

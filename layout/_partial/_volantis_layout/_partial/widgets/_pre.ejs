@@ -1,0 +1,13 @@
+<%
+
+if (isMobile) {
+  page.widget_platform = 'mobile';
+} else {
+  page.widget_platform = 'desktop';
+}
+
+page.widget_style += theme.style.sidebar.effect.join(' ');
+
+page.widget_pin = item.pin === true && !isMobile ? 'pin' : '';
+
+%>

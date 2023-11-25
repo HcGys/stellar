@@ -1,0 +1,26 @@
+*
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  outline: none
+  margin: 0
+  padding: 0
+body *
+  scrollbar-codeblock()
+html
+  font-family: $ff-body
+  font-size: $fs-root
+  -webkit-text-size-adjust: 100%
+  -ms-text-size-adjust: 100%
+  if hexo-config('style.smooth_scroll')
+    scroll-behavior: smooth
+  if hexo-config('style.scrollbar.size')
+    scrollbar(convert(hexo-config('style.scrollbar.size')), convert(hexo-config('style.scrollbar.border')) || 0px, convert(hexo-config('style.scrollbar.color')) || var(--text-meta), convert(hexo-config('style.scrollbar.hover')) || var(--text-p3))
+
+body
+  background: var(--site-bg)
+  margin: 0
+  -webkit-font-smoothing: antialiased
+  -moz-osx-font-smoothing: grayscale
+  text-rendering: optimizelegibility
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0)

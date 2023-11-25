@@ -1,0 +1,36 @@
+<%
+page.menu_id = '404';
+page.layout = '404';
+page.comment_title = '这里是虚无之地哦，不过别担心，此处也是可以评论的！！！';
+page.header = 'auto';
+page.robots = 'none';
+page.cover = true;
+
+if (theme.comments.service === 'giscus') {
+  page['giscus'] = {
+    'data-mapping': 'specific',
+    'data-term': "404"
+  };
+}
+
+%>
+<div class="l_main no_sidebar">
+    <article class='md-text error-page'>
+        <h1><img id='error' src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.4/404/1c830bfcd517d.svg' alt='404'></h1>
+        <p class='what'>
+          <strong>
+            <%- __('page.error.what') %>
+          </strong>
+        </p>
+        <p class='why'>
+          <%- __('page.error.why') %>
+        </p>
+        <br><br>
+        <a class='button' id='back' href="<%- config.root %>"><%- __('page.error.action') %></a>
+    </article>
+    <!-- 移动端 -->
+    <aside class='mobile-sidebar reveal' layout='<%- page.layout %>'>
+      <%- partial('_partial/widgets/load', {isMobile: true}) %>
+    </aside>
+    <%- partial('../plugins/comments/layout') %>
+</div>

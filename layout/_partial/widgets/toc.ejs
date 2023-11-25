@@ -14,9 +14,11 @@ function layoutToc() {
 
 function layoutTocHeader(title) {
   var el = '';
-  el += '<div class="widget-header cap dis-select">';
-  el += '<span class="name">' + (title || page.title || __("meta.toc")) + '</span>';
-  el += '</div>';
+  // el += '<div class="widget-header cap dis-select">';
+  // el += '<span class="name">' + (title || page.title || __("meta.toc")) + '</span>';
+  // el += '</div>';
+  if (item.header) item.header.title = (title || page.title || __("meta.toc"));
+  el += partial('header', {item: item});
   return el;
 }
 
@@ -51,13 +53,16 @@ function layoutDiv(fallback) {
   if (proj && proj.pages) {
     if (proj.pages.length > 1) {
       type = 'multi';
+      if (item.header && item.header.mutil_toc_icon) item.header.icon = item.header.mutil_toc_icon
     } else {
       type = 'single';
+      if (item.header && item.header.single_toc_icon) item.header.icon = item.header.single_toc_icon
     }
   } else {
     let toc_content = toc(page.content);
     if (toc_content && toc_content.length > 0) {
       type = 'single';
+      if (item.header && item.header.single_toc_icon) item.header.icon = item.header.single_toc_icon
     }
   }
 

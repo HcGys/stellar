@@ -1,5 +1,22 @@
 <script>
+  stellar.giscus = {};
+  function check_giscus() {
+    if (stellar.dark.mode === "dark") {
+      stellar.giscus.Theme = '<%- theme.comments.giscus.theme.dark %>';
+    } else {
+      stellar.giscus.Theme = '<%- theme.comments.giscus.theme.light %>';
+    }
+
+    return document.querySelector('section.giscus');
+  }
+  
   function loadJS() {
+
+    <% if (['sun-night','custom'].includes(theme.plugins.darkmode.type)) { %>
+      const HEAD = check_giscus();
+      if (!HEAD) return;
+    <% } %>
+
     const els = document.querySelectorAll("#comments #giscus");
     if (els.length === 0) return;
     els.forEach((el, i) => {
@@ -17,10 +34,29 @@
           script.setAttribute(attr.name, attr.value);
         }
       }
+      <% if (['sun-night','custom'].includes(theme.plugins.darkmode.type)) { %>
+        script.setAttribute('data-theme', stellar.giscus.Theme);
+      <% } %>
       el.appendChild(script);
     });
   }
   window.addEventListener('DOMContentLoaded', (event) => {
     loadJS();
   });
+  // loadJS();
+
+  function dark_giscus() {
+    const HEAD = check_giscus();
+    if (!HEAD) return;
+
+    const message = {
+      setConfig: {
+        theme: stellar.giscus.Theme
+      }
+    };
+    const giscusIframe = document.querySelector('iframe.giscus-frame');
+    giscusIframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+  }
+  stellar.dark.push(dark_giscus);
+
 </script>

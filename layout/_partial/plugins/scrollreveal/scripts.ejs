@@ -1,0 +1,15 @@
+<% if (theme.plugins.scrollreveal) { %>
+<script>
+  stellar.loadScript(stellar.GLOBAL_CONFIG.plugins.scrollreveal.js).then(function () {
+    ScrollReveal().reveal("body .reveal", {
+      distance: stellar.GLOBAL_CONFIG.plugins.scrollreveal.distance,
+      duration: stellar.GLOBAL_CONFIG.plugins.scrollreveal.duration,
+      interval: stellar.GLOBAL_CONFIG.plugins.scrollreveal.interval,
+      scale: stellar.GLOBAL_CONFIG.plugins.scrollreveal.scale,
+      easing: stellar.GLOBAL_CONFIG.plugins.scrollreveal.easing || 'ease-out',
+      origin: stellar.GLOBAL_CONFIG.plugins.scrollreveal.origin || 'bottom',
+      rotate: stellar.GLOBAL_CONFIG.plugins.scrollreveal.rotate || {x: 0, y: 0, z: 0}
+    });
+  })
+</script>
+<% } %>

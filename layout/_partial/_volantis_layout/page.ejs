@@ -1,0 +1,37 @@
+<%- partial('_pre') %>
+<%
+if (page.show_title == undefined) {
+  page.show_title = true;
+}
+%>
+
+<div class="l_main<%- page.sidebar == false ? ' no_sidebar' : '' %>">
+  <% if (page.h1 || page.title || (page.content && page.content.length > 0)) { %>
+    <%- partial('_partial/main/navbar/breadcrumb', {has_logo: false}) %>
+  <% } %>
+
+  <article class="md-text content <%- page.layout %> <%- (page.indent ? ' indent' : '') %> <%- scrollreveal() %>">
+
+  <% if (page.show_title || page.h1) { %>
+    <% const title = page.h1 || page.title; %>
+    <% if (title && title.length > 0) { %>
+      <h1 class="article-title">
+        <span>
+          <%- page.h1 || page.title %>
+        </span>
+      </h1>
+    <% } %>
+  <% } %>
+
+  <% if (page.content && page.content.length > 0) { %>
+    <%- partial('meta', {post: page, position: 'top'}) %>
+    <%- page.content %>
+    <%- partial('../main/article/article_footer') %>
+  <% } %>
+
+  </article>
+  <aside class='mobile-sidebar reveal' layout='<%- page.layout %>'>
+    <%- partial('_partial/widgets/load', {isMobile: true}) %>
+  </aside>
+  <%- partial('../plugins/comments/layout') %>
+</div>

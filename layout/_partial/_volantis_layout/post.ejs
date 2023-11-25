@@ -1,0 +1,54 @@
+<%- partial('_pre') %>
+<%
+if (page.menu_id == undefined) {
+  page.menu_id = 'post';
+}
+if (page.header == undefined) {
+  page.header = 'auto';
+}
+if (page.show_title == undefined) {
+  page.show_title = true;
+}
+function layoutTitle() {
+  if (!page.show_title && !page.h1) {
+    return ''
+  }
+  const title = page.h1 || page.title;
+  if (title && title.length > 0) {
+    return '<h1 class="article-title"><span>' + title + '</span></h1>';
+  } else {
+    return '';
+  }
+}
+let post = page;
+let heti = '';
+if (theme.plugins.heti && theme.plugins.heti.enable) {
+  heti = ' heti';
+}
+%>
+
+<div class="l_main<%- page.sidebar == false ? ' no_sidebar' : '' %>">
+  <% if (page.mathjax == true){ %>
+      <%- partial('mathjax') %>
+  <% } %>
+
+  <%- partial('_partial/main/navbar/breadcrumb', {has_logo: false}) %>
+  <article class='md-text content<%- heti %> <%- post.layout %><%- post.indent ? ' indent' : '' %><%- scrollreveal() %>'>
+  <%- layoutTitle() %>
+  <%- partial('meta', {post: page, position: 'top'}) %>
+  <%- post.content %>
+  <% if (theme.plugins.tianli_gpt.enable && ['all', 'post'].includes(theme.plugins.tianli_gpt.field)) { %>
+    <%- partial('../main/article/ai_abstract') %>
+  <% } %>
+  <%- partial('../main/article/article_footer') %>
+  </article>
+  <%- partial('../main/article/read_next') %>
+  <!-- 相关文章 -->
+  <% if (theme.article.body.footer_widget.related_posts) { %>
+    <%- partial('../main/article/related_posts') %>
+  <% } %>
+  <aside class='mobile-sidebar reveal' layout='<%- page.layout %>'>
+    <%- partial('_partial/widgets/load', {isMobile: true}) %>
+  </aside>
+  <%- partial('../plugins/comments/layout') %>
+</div>

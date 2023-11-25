@@ -13,12 +13,17 @@ hexo.extend.helper.register('popular_posts_wrapper', function(args){
   if (json == undefined || json.length == 0) {
     return '';
   }
-  const cfg = hexo.theme.config.article.related_posts;
+  const cfg = hexo.theme.config.related_posts;
   if (cfg.enable != true) return;
   var returnHTML = "";
   var div = `
-    <section class='header'>
-      <div class='title cap theme'>${title}</div>
+    <section class='header cap theme'>
+      <div class='title'>`;
+  if (cfg.icon) {
+    div += `<i class="${cfg.icon} fa-fw" aria-hidden="true"></i>`;
+  }
+  div += `
+  <span>${title}</span></div>
     </section>
     <section class='body'>
     `;

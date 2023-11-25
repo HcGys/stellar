@@ -1,0 +1,81 @@
+.tag-plugin.folding
+  display: block
+  padding: .75rem
+  margin: 1rem 0
+  border-radius: $border-block
+  background: var(--theme-bg2)
+  border: 1px solid var(--theme-border)
+  >details>summary
+    cursor: pointer
+    padding: 0.5rem
+    margin: -0.5rem
+    color: var(--text-p2)
+    font-weight: 500
+    font-size: $fs-14
+    position: relative
+    line-height: 1.2
+    outline: none
+    >
+      span 
+        margin-left: 0.25em
+      p,h1,h2,h3,h4,h5,h6
+        display: inline
+        border-bottom: none !important
+    &:hover
+      color: var(--text-p0)
+    &:after
+      position: absolute
+      content: '+'
+      text-align: center
+      top: 50%
+      transform: translateY(-50%)
+      -webkit-transform: translateY(-50%)
+      -khtml-transform: translateY(-50%)
+      -moz-transform: translateY(-50%)
+      -o-transform: translateY(-50%)
+      -ms-transform: translateY(-50%)
+      right: 1rem
+      line-height: 1
+  >div.body  // 一定要加>,否则会将所有的递归子div.body除掉。这里只需要除掉第一层的div.body
+    display: none
+
+
+.tag-plugin.folding>details[open]
+  >summary
+    color: var(--text-p1)
+    font-weight: 700
+    z-index 1
+    &:after
+      content: '-'
+  + div.body
+    display: block
+    color: var(--text-p1)
+    >:last-child
+      margin-bottom: 0
+
+.tag-plugin.folding[child=codeblock]>details+div.body
+  padding: 0
+  background: transparent
+  .highlight
+    border: none
+    border-radius: 0
+    background: var(--theme-bg2)
+    margin: 0 -0.5rem -0.5rem
+    .code-tools
+      background: var(--theme-bg2)
+    // figcaption
+    //   display: none
+    // .code:before
+    //   content: none
+
+.tag-plugin.folding[child=iframe]>details
+  overflow: hidden
+  background: none
+  >summary
+    background: none
+  +div.body
+    padding: 0
+    background: none
+    overflow: hidden
+.tag-plugin.floding[child=diagram]>div.body
+  margin-top: 1rem

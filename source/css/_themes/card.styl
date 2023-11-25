@@ -1,0 +1,316 @@
+// md-text
+
+@media screen and (min-width: 1400px)
+    .l_main
+        margin-left: 0
+
+@media screen and (max-width: 667px)
+    .l_body .l_main,
+    .l_body .l_left .widgets,
+    .l_body .l_left .header
+        margin: 0 0.75rem
+    
+    .l_main
+        margin: 0
+    
+    .l_left>.footer
+        margin: 0 0.75rem 1rem !important
+
+
+.l_main header
+    margin: 1rem 1rem 1rem
+
+
+.bread-nav.fs12
+    background: var(--lay-1)
+    border-radius: 8px
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,.05)
+    width: fit-content
+    padding: 0.5rem 1rem
+    margin-bottom: 1rem
+
+.md-text.content
+  background: var(--lay-1)
+  border-radius: 8px
+  margin-bottom: 1rem
+  padding: 1rem !important
+  box-shadow: 0 1px 2px 0 rgba(0,0,0,.05)
+
+.related-wrap
+    margin: 0
+
+article.md-text.content+.related-wrap
+  margin-bottom: 1rem
+  padding: 0
+  >.body
+    >.item
+        border-top: none !important
+        border-bottom: none !important
+        padding: 1rem !important
+    >.item.active
+        box-shadow: 0 1px 2px 0 rgba(0,0,0,.05);
+        background: var(--lay-1)
+        border-radius: 8px
+
+.related-wrap#related-posts 
+    background: var(--lay-1)
+    border-radius: 8px
+    margin-bottom: 1rem
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,.05)
+    padding: 1rem
+
+
+.related-wrap#comments
+  padding: 1rem
+  background: var(--lay-1)
+  border-radius: 8px
+  margin-top: 1rem
+  box-shadow: 0 1px 2px 0 rgba(0,0,0,.05)
+
+// 时间线
+.tag-plugin.timeline .body,
+.tag-plugin.timeline[api] .body .footer
+    background: var(--timeLineNode-bg)
+
+li>code:not([class]), p>code:not([class]) {
+    background: var(--lineCode-bg)
+}
+
+.tag-plugin.timeline[api] .body .footer .reaction {
+    border-color: var(--timeLineReaction-bg)
+    background: var(--timeLineReaction-bg)
+}
+
+.tag-plugin.timeline[api] .body .footer a 
+    background: var(--timeLineFooterLeft-bg)
+    border: none !important
+
+.md-text .tag-plugin.paper>.content.line>.author-date, .md-text .tag-plugin.paper>.content.line>.body, .md-text .tag-plugin.paper>.content.line>.footer, .md-text .tag-plugin.paper>.content.line>.meta, .md-text .tag-plugin.paper>.content.line>.title
+    background: linear-gradient(var(--lay-1) 1.5rem,var(--block-border) 1px)
+    background-size: 100% calc(1.5rem + 1px)
+
+.tag-plugin.folding,
+.md-text .tag-plugin.note,
+.md-text .tag-plugin.copy,
+.md-text .tag-plugin.copy button.copy-btn,
+details.toc,
+.md-text .article-footer
+    border: none
+
+.tag-plugin.timeline .body blockquote
+    background: var(--block-border)
+    width: fit-content
+    border-radius: 4px 6px 6px 4px
+
+.social-wrap a.social:hover 
+    background: var(--block-border)
+
+.md-text .tag-plugin.copy button.copy-btn
+    // background: #d5d8df
+    background: var(--copyBtn-bg)
+
+.md-text .tag-plugin.copy
+    // background: #e3e5e7
+    background: var(--copyInput-bg)
+
+.l_main
+    > .nav-wrap
+        padding: 0 !important
+        a.active,
+        a:hover
+            background: var(--card-post)
+    > .post-list
+        margin-left: 0 !important
+        margin-right: 0 !important
+    > .post-list.tags
+        padding: 1rem
+        background: var(--lay-1)
+        border-radius: 8px
+        box-shadow: 0 1px 2px 0 rgba(0,0,0,.05)
+    > .post-list.archives
+        padding: 1rem
+        background: var(--lay-1)
+        border-radius: 8px
+        box-shadow: 0 1px 2px 0 rgba(0,0,0,.05)
+    > .post-list.categories
+        padding: 1rem
+        background: var(--lay-1)
+        border-radius: 8px
+        box-shadow: 0 1px 2px 0 rgba(0,0,0,.05)
+if hexo-config('style.layout') == 'default'
+    @media screen and (max-width: 667px)
+        .l_main
+            > .nav-wrap
+                padding: 0 1rem !important
+            > .post-list
+                margin: 1rem !important
+
+
+.post-list .post-card
+    background: var(--lay-1)
+
+// sidebar
+
+.l_body .l_left
+    margin-right: 1rem
+
+.l_left .header
+    margin-bottom: 1rem
+
+
+@media screen and (min-width: 667px)
+    .l_left>.widgets:first-child>.widget-wrapper:first-child
+        margin-top: calc(2 * var(--gap-l)) !important
+
+.l_left >.header
+    margin: 0
+    margin-top: calc(2 * var(--gap-l)) !important
+    // margin-bottom: 1rem !important
+
+nav.menu
+    border: none
+
+.logo-wrap
+    background: var(--lay-1)
+    border-radius: 8px
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,.05)
+    padding: 0.75rem
+    + nav.menu
+        background: var(--lay-1)
+
+.logo-wrap .widget-body
+    margin-bottom: 0 !important
+
+
+a.wiki-home.cap
+    background: var(--lay-1)
+    border-radius: 8px
+    box-shadow: rgba(67, 71, 85, 0.27) 0px 0px 0.25em, rgba(90, 125, 188, 0.05) 0px 0.25em 1em
+    padding: 0.3rem
+
+
+.l_left>.footer
+    padding: 0.5rem 1rem
+    margin: 0
+
+footer.footer.dis-select
+    background: var(--lay-1)
+    border-radius: 8px
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,.05)
+    margin-bottom: 1rem
+
+widget.widget-wrapper:last-child
+    margin-bottom: 1rem !important
+
+
+.widgets .widget-wrapper+.widget-wrapper .widget-header
+    margin-top: 0 !important
+
+
+.widgets .widget-wrapper .widget-header
+    background: var(--lay-1)
+
+.widgets .widget-wrapper .widget-body
+    margin: 0 1rem
+
+.widget-wrapper
+    // margin: 0 0 1rem 0 !important
+    margin: 1rem 0 0 0 !important
+    background: var(--lay-1)
+    border-radius: 8px
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,.05)
+    padding: .75rem 0
+
+.widgets .widget-wrapper.search
+    padding-top: calc(0.75rem - 6px)
+
+
+.widget-wrapper:not(:first-child) .search-wrapper
+    margin-top: 0
+
+.widget-wrapper #search-result, .widget-wrapper .search-no-result 
+    margin-top: 0
+
+.search-wrapper .search-no-result
+    margin: 1em 0 0 0
+
+.widget-wrapper .search-form
+    border-radius: 3px
+    background: var(--lay-1)
+    // &::after
+    //     height: 0
+
+.widget-wrapper.related-posts .popular-posts .popular-posts-item:last-child
+    margin-bottom: 0
+
+.widget-wrapper.toc.multi .doc-tree 
+    border: none
+
+.widget-wrapper.toc.multi .doc-tree.active a.doc-tree-link:not(:only-child) 
+    border-bottom: none
+
+widget.widget-wrapper.ghuser
+    background: var(--site-bg)
+    padding: 0
+
+.widget-body.stellar-ghinfo-api
+    margin: 0 !important
+    background: var(--lay-1) !important
+
+widget.widget-wrapper.ghrepo
+    background: var(--site-bg)
+    padding: 0
+
+.ghrepo .widget-body
+    margin: 0 !important
+
+.widget-wrapper.ghrepo .repo
+    background: var(--lay-1)
+    border-radius: 8px !important
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,.05)
+    &:hover
+        box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px
+
+article.md-text.error-page 
+    background: var(--lay-1)
+    border-radius: 8px
+    margin-bottom: 1rem
+    padding: 1rem!important
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,.05)
+
+
+.tag-plugin.folding:not([child=codeblock])>details+div.body
+    .highlight
+        background: var(--block-2);
+
+.paginator-wrap
+    margin: unset
+    background: var(--lay-1)
+    a.page-number
+        color: var(--text-p3)
+        &:hover
+            color: $color-hover
+    span.current
+        color: var(--theme-link)
+    .extend
+        width: unset
+        height: unset
+        background-image: unset !important
+        &:hover
+            color: $color-hover
+
+
+// volantis layout
+
+if hexo-config('style.layout') == 'volantis'
+    @media screen and (min-width: 667px)
+        .l_left>.widgets:first-child>.widget-wrapper:first-child
+            margin-top: 0 !important
+    .widget-wrapper
+        margin: 0 0 1rem 0 !important
+    #u-search .modal,
+    #u-search .modal .modal-header,
+    #u-search .modal .modal-body,
+    ul.list-v
+        background: var(--lay-1) !important
+    

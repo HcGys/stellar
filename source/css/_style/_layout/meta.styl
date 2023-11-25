@@ -1,0 +1,148 @@
+.l_main
+    .article-meta+h1,.article-meta+h2
+        margin-top: $gap
+    .article-meta.article-meta
+      color: var(--text-p3)
+      margin-bottom: $gap
+      line-height: normal
+      &#top
+        margin-top: 1 * $gap
+        margin-bottom: 2 * $gap
+      &#bottom
+        margin-top: 2 * $gap
+        margin-bottom: 0.5 * $gap
+      .aplayer,.aplayer-pic,.thumbnail
+        width: 48px
+        height: 48px
+      .aplayer,.thumbnail
+        trans1(all)
+        border-radius: 100%
+        float: right
+        margin: 2px
+        box-shadow: $boxshadow-card
+        &:hover
+          border-radius: 25%
+          transform: scale(1.1)
+          box-shadow: $boxshadow-card-float
+        @media screen and (max-width: $device-mobile)
+          &:hover
+            border-radius: 100%
+            transform: scale(1)
+            box-shadow: $boxshadow-card
+      .thumbnail
+        width: auto
+        border-radius: 4px
+        box-shadow: none
+        trans1(all)
+        &:hover
+          border-radius: 4px
+          transform: scale(1.1) rotate(4deg)
+          box-shadow: none
+
+
+
+      .new-meta-box
+        trans(.1s)
+        display: flex
+        align-items: center
+        flex-wrap: wrap
+        -webkit-font-smoothing: auto
+        -moz-osx-font-smoothing: auto
+        &,p,i
+          font-size: $fs-codeblock
+        .new-meta-item
+          color: var(--text-p3)
+          .notlink
+            cursor: $default
+            &:hover
+              color: var(--text-p3)
+              p
+                color: var(--text-p3)
+          display: flex
+          align-items: baseline
+          justify-content: center
+          margin: 0 $gap 0 0
+          padding: 8px 0  // seo https://web.dev/tap-targets/
+          &:last-child
+            margin-right: 0
+          img,i
+            display: inline-block
+          i
+            margin-right: 4px
+            border-radius: 0
+            &.fa-hashtag
+              margin-right: 2px
+          p,a
+            color: var(--text-p3)
+            padding: 3px 0
+          a
+            display: flex
+            justify-content: center
+            align-items: center
+            img
+              height: 16px
+              width: 16px
+              margin-right: 8px // seo https://web.dev/tap-targets/
+            p
+              margin: 0
+              font-weight: normal
+              trans1(all)
+            &:hover
+              color: $color-hover
+              p
+                color: $color-hover
+
+        .author
+          img,i
+            border-radius: 100%
+          img
+            transform: translateY(-0.5px)
+
+        @media screen and (max-width: $device-mobile)
+          .share
+            width: 100%
+            margin-top: $gap
+            background: var(--block)
+            border-radius: $border-block
+
+        .share-body
+          position: relative
+          display: flex
+          justify-content: center
+          margin: 0
+          padding: 0 2px
+          a
+            padding: 0
+            margin: 0 1px
+            img
+              margin: 2px
+              height: 24px
+              @media screen and (max-width: $device-mobile)
+                height: 32px
+                margin: 8px
+              width: auto
+              background: transparent
+          div.hoverbox
+            div.target
+              display: none
+              position: absolute
+              background: var(--color-card)
+              border-radius: $border-card
+              box-shadow: $boxshadow-card-float
+              padding: 8px
+              left: 50%
+              top: -20px
+              transform: translate(-50%, -100%)
+              img
+                display: block
+                margin: 0
+                padding: 0
+                height: 128px
+                width: 128px
+                min-width: 128px
+            &:hover
+              div.target
+                display: flex
+            @media screen and (max-width: $device-mobile)
+              div.target
+                position: absolute

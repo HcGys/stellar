@@ -1,0 +1,16 @@
+<% if (theme.cover.enable) { %>
+    <div id="l_cover">
+      <% if (page.cover == true) { %>
+        <% if (is_home() && page.prev == 0 && theme.cover.height_scheme == 'full') { %>
+          <div class="cover-wrapper <%- page.layout %> <%- theme.cover.layout_scheme %>" id='full'>
+            <%- partial("_cover/layout") %>
+            <div id="scroll-down"><i class="fa-duotone fa-angles-down scroll-down-effects"></i></div>
+          </div>
+        <% } else { %>
+          <div class="cover-wrapper <%- page.layout %> <%- theme.cover.layout_scheme %>" id='half'>
+            <%- partial("_cover/layout") %>
+          </div>
+        <% } %>
+      <% } %>
+    </div>
+<% } %>

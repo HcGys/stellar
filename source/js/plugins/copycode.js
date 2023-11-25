@@ -1,29 +1,94 @@
-const codeElementArr = document.querySelectorAll('.code')
-codeElementArr.forEach(code => {
-  const codeBeforeWidth = window.getComputedStyle(code, '::before').width.split('px')[0]
-  const codeBeforePadding = window.getComputedStyle(code, '::before').padding.split(' ').pop().split('px')[0]
+function init() {
+  const highlightElementArr = document.querySelectorAll('figure.highlight')
+  highlightElementArr.forEach(hl => {
+    var code = hl.querySelector('.code')
 
-  // copy btn 
-  const codeCopyBtn = document.createElement('div')
-  codeCopyBtn.classList.add('copy-btn')
-  codeCopyBtn.style.right = Number(codeBeforeWidth) + Number(codeBeforePadding) * 2 + 'px'
-  codeCopyBtn.innerText = stellar.plugins.copycode.default_text
+    const btnDiv = document.createElement('div');
+    btnDiv.classList.add('code-btns');
 
-  code.appendChild(codeCopyBtn)
+    // fullscreen btn
+    const codeFullscreenBtn = document.createElement('span')
+    codeFullscreenBtn.classList.add('fullscreen-btn')
+    codeFullscreenBtn.innerHTML = `<i class='fa-duotone fa-expand fa-fw'></i><span class="desc">放大</span>`
+    const codeFullscreenBtnDesc = codeFullscreenBtn.querySelector('span');
+    const codeFullscreenBtnIcon = codeFullscreenBtn.querySelector('i');
+    codeFullscreenBtn.addEventListener('click', ()=>{
+      hl.classList.toggle('fullscreen');
+      if (hl.classList.contains('fullscreen')) {
+        codeFullscreenBtnIcon.classList.remove('fa-expand');
+        codeFullscreenBtnIcon.classList.add('fa-compress');
+        codeFullscreenBtnDesc.innerText = '缩小';
+        document.querySelector('body').setAttribute('style', 'overflow:hidden;');
+      } else {
+        codeFullscreenBtnIcon.classList.remove('fa-compress');
+        codeFullscreenBtnIcon.classList.add('fa-expand');
+        codeFullscreenBtnDesc.innerText = '放大';
+        document.querySelector('body').removeAttribute('style');
+        util.animateOut(hl, "slide-out .5s");
+      }
+    })
+    
+    btnDiv.appendChild(codeFullscreenBtn);
 
-  codeCopyBtn.addEventListener('click', async () => {
-    const currentCodeElement = code.children[0]?.innerText
-    await copyCode(currentCodeElement)
+    // copy btn 
+    const codeCopyBtn = document.createElement('span')
+    codeCopyBtn.classList.add('copy-btn')
+    codeCopyBtn.innerHTML = `<i class='fa-duotone fa-copy fa-fw'></i><span class="desc">${stellar.GLOBAL_CONFIG.plugins.copycode.default_text}</span>`
+    const codeCopyBtnIcon = codeCopyBtn.querySelector('i');
+    const codeCopyBtnDesc = codeCopyBtn.querySelector('span');
 
-    codeCopyBtn.innerText = stellar.plugins.copycode.success_text
-    codeCopyBtn.classList.add('success')
+    btnDiv.appendChild(codeCopyBtn);
 
-    setTimeout(() => {
-      codeCopyBtn.innerText = stellar.plugins.copycode.default_text
-      codeCopyBtn.classList.remove('success')
-    },3000)
+    // code.appendChild(codeCopyBtn)
+
+    codeCopyBtn.addEventListener('click', async () => {
+      const currentCodeElement = code.children[0]?.innerText
+      await copyCode(currentCodeElement)
+
+      codeCopyBtnDesc.innerText = stellar.GLOBAL_CONFIG.plugins.copycode.success_text
+      codeCopyBtn.classList.add('success')
+      codeCopyBtnIcon.classList.remove('fa-copy')
+      codeCopyBtnIcon.classList.remove('fa-circle-exclamation')
+      codeCopyBtnIcon.classList.add('fa-circle-check')
+      
+      util.messageCopyright()
+
+      setTimeout(() => {
+        codeCopyBtnDesc.innerText = stellar.GLOBAL_CONFIG.plugins.copycode.default_text
+        codeCopyBtn.classList.remove('success')
+        codeCopyBtnIcon.classList.remove('fa-check')
+        codeCopyBtnIcon.classList.add('fa-copy')
+      },3000)
+    })
+
+    // hl.appendChild(btnDiv);
+
+    // code-lang
+    let langName = hl.getAttribute('class').split(' ')[1]
+    const codeLang = document.createElement('div');
+    codeLang.classList.add('code-lang');
+    codeLang.innerHTML = `<span>${langName}</span>`;
+
+    const codeBtnsAndLang = document.createElement('div');
+    codeBtnsAndLang.classList.add('code-btns-and-lang');
+    codeBtnsAndLang.appendChild(btnDiv);
+    codeBtnsAndLang.appendChild(codeLang);
+
+    // code-tools
+    const codeTools = document.createElement('div');
+    codeTools.classList.add('code-tools');
+    let caption = hl.querySelector('.highlight figcaption');
+    if (caption) {
+      codeTools.appendChild(caption);
+    } else {
+      codeTools.appendChild(document.createElement('figcaption'));
+    }
+    codeTools.appendChild(codeBtnsAndLang);
+
+    hl.insertBefore(codeTools, hl.children[0]);
+
   })
-})
+}
 
 async function copyCode(currentCode) {
   // console.log(currentCode)
@@ -33,19 +98,43 @@ async function copyCode(currentCode) {
       await navigator.clipboard.writeText(currentCode)
       } catch (error) {
       // 未获得用户许可
-      codeCopyBtn.innerText = '未获得用户许可'
+      codeCopyBtnDesc.innerText = '未获得用户许可'
       codeCopyBtn.classList.add('warning')
+      codeCopyBtnIcon.classList.remove('fa-copy')
+      codeCopyBtnIcon.classList.add('fa-circle-exclamation')
+
+      hud.message('未获得用户许可', error, {
+        icon: 'fa-duotone fa-exclamation-square red',
+        displayMode: 1,
+        time: 9000
+      });
+
       setTimeout(() => {
-        codeCopyBtn.innerText = stellar.plugins.copycode.default_text
+        codeCopyBtnDesc.innerText = stellar.GLOBAL_CONFIG.plugins.copycode.default_text
         codeCopyBtn.classList.remove('warning')
+        codeCopyBtnIcon.classList.remove('fa-circle-exclamation')
+        codeCopyBtnIcon.classList.add('fa-copy')
       },3000)
     }
   } else {
-    codeCopyBtn.innerText = '当前浏览器不支持此api'
+    codeCopyBtnDesc.innerText = '当前浏览器不支持此api'
     codeCopyBtn.classList.add('warning')
+    codeCopyBtnIcon.classList.remove('fa-copy')
+    codeCopyBtnIcon.classList.add('fa-circle-exclamation')
+
+    hud.message('COPY错误', '当前浏览器不支持此api', {
+      icon: 'fa-duotone fa-exclamation-square red',
+      displayMode: 1,
+      time: 9000
+    });
+
     setTimeout(() => {
-      codeCopyBtn.innerText = stellar.plugins.copycode.default_text
+      codeCopyBtnDesc.innerText = stellar.GLOBAL_CONFIG.plugins.copycode.default_text
       codeCopyBtn.classList.remove('warning')
+      codeCopyBtnIcon.classList.remove('fa-circle-exclamation')
+      codeCopyBtnIcon.classList.add('fa-copy')
     },3000)
   }
 }
+
+init();

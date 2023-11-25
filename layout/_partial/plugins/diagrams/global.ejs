@@ -1,0 +1,119 @@
+<% if (theme.plugins.mermaid || theme.plugins.echarts){ %>
+    <script text="text/javascript">
+        // diagrams
+        function markNodePos(node){
+          // 针对firefox中的图表在folders、folding中的渲染宽高问题
+          document.querySelectorAll('.folders').forEach(folders=>{
+            folders.querySelectorAll(node).forEach(m => {
+              mPos = m.getAttribute('pos');
+              if (!mPos || !folders.querySelector('#' + mPos)) {
+                if (mPos) {
+                  if (m.classList.contains('intab')) {
+                    m.classList.remove('intab');
+                  } else if (m.classList.contains('infolding')) {
+                    m.classList.remove('infolding');
+                  }
+                }
+                if (!m.classList.contains('infolder')) m.classList.add('infolder');
+                if (mPos) m.classList.remove(mPos);
+                m.classList.add(folders.id);
+                m.setAttribute('pos', folders.id);
+              }
+            });
+          });
+          document.querySelectorAll('.folding').forEach(folding=>{
+            folding.querySelectorAll(node).forEach(m => {
+              mPos = m.getAttribute('pos');
+              if (!mPos || !folders.querySelector('#' + mPos)) {
+                if (mPos) {
+                  if (m.classList.contains('intab')) {
+                    m.classList.remove('intab');
+                  } else if (m.classList.contains('infolder')) {
+                    m.classList.remove('infolder');
+                  }
+                }
+                if (!m.classList.contains('infolding')) m.classList.add('infolding');
+                if (mPos) m.classList.remove(mPos);
+                m.classList.add(folding.id);
+                m.setAttribute('pos', folding.id);
+              }  
+            });
+          });
+          // 对tabs下的dia进行标记，用以区分
+          document.querySelectorAll('.tabs').forEach(tabs=>{
+            var mNodes = tabs.querySelectorAll(node);
+            mNodes.forEach(m => {
+              mPos = m.getAttribute('pos');
+              if (!mPos || !tabs.querySelector('#' + mPos)) {
+                if (mPos) {
+                  if (m.classList.contains('infolder')) {
+                    m.classList.remove('infolder');
+                  } else if (m.classList.contains('infolding')) {
+                    m.classList.remove('infolding');
+                  }
+                }
+                if (!m.classList.contains('intab')) m.classList.add('intab');
+                if (mPos) m.classList.remove(mPos);
+                m.classList.add(tabs.id);
+                m.setAttribute('pos', tabs.id);
+              }
+            });
+          });
+        }
+        
+        function diagramRenderMark(dia, contain) {
+            // 对默认显示的tab下面的mermaid进行标记，用以初始化渲染
+            contain.querySelectorAll('.tab-pane').forEach(tabPane => {
+                if (tabPane.classList.contains('active')) {
+                // 将初始显示的tab下的所有mermaid标记为drew,，以便后续渲染
+                tabPane.querySelectorAll( dia + '.' + tabPane.parentNode.parentNode.id).forEach(m => {
+                    if (dia === '.echarts') {
+                    m.classList.add('active');
+                    }
+                    if (dia !== '.echarts' || contain !== document) m.classList.add('wait-drew');
+                });
+                } else {
+                // 针对tab循环嵌套的情形 将所有在非active的tab下的由于嵌套的tabs（firefox时的folding）导致错误的mermaid drew去掉
+                tabPane.querySelectorAll(dia + '.wait-drew').forEach(m => {
+                    if (dia === '.echarts') {
+                    m.classList.remove('active');
+                    }
+                    if (dia !== '.echarts' || contain !== document) m.classList.remove('wait-drew');
+                });
+                }
+            });
+        
+            // 对默认显示的folders下面的dia进行标记，用以初始化渲染
+            contain.querySelectorAll('.folders').forEach(folders => {
+                folders.querySelectorAll(dia + '.wait-drew').forEach(m => {
+                if (dia === '.echarts') {
+                    m.classList.remove('active');
+                }
+                if (dia !== '.echarts' || contain !== document) m.classList.remove('wait-drew');
+                });
+            });
+        
+            // 对默认显示的folding下面的dia进行标记，用以初始化渲染
+            contain.querySelectorAll('.folding').forEach(folding => {
+                if (folding.open) {
+                // 将初始显示的folding下的所有dia标记为drew,，以便后续渲染
+                folding.querySelectorAll( dia + '.' + folding.id).forEach(m => {
+                    if (dia === '.echarts') {
+                    m.classList.add('active');
+                    }
+                    if (dia !== '.echarts' || contain !== document) m.classList.add('wait-drew');
+                });
+                } else {
+                // 针对folding循环嵌套的情形 将所有在非open的folding下的由于嵌套的tabs（firefox时的folding）导致错误的dia drew去掉
+                folding.querySelectorAll(dia + '.wait-drew').forEach(m => {
+                    if (dia === '.echarts') {
+                    m.classList.remove('active');
+                    }
+                    if (dia !== '.echarts' || contain !== document) m.classList.remove('wait-drew');
+                });
+                }
+            });
+        }
+        
+    </script>
+<% } %>

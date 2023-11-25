@@ -1,0 +1,54 @@
+<%- partial('_pre', {item: item, isMobile: isMobile}) %>
+<%
+var proj;
+if (page.layout === 'wiki' && page.wiki) {
+  proj = theme.wiki.projects[page.wiki];
+}
+%>
+<% if (page.layout == 'wiki' && proj && page.menu_id == 'wiki') { %>
+    <widget class="widget-wrapper logo-wrap wiki <%- page.widget_platform %>">
+        <div class="widget-body">
+            <!-- all products -->
+            <a style="filter: grayscale(100%)" class="wiki-home cap" href="<%- url_for(config.wiki_dir) %>">
+                <!-- <svg aria-hidden="true" viewBox="0 0 16 16" width="1rem" height="1rem" fill="currentColor">
+                    <path fill-rule="evenodd" d="M7.78 12.53a.75.75 0 01-1.06 0L2.47 8.28a.75.75 0 010-1.06l4.25-4.25a.75.75 0 011.06 1.06L4.81 7h7.44a.75.75 0 010 1.5H4.81l2.97 2.97a.75.75 0 010 1.06z"></path>
+                </svg> -->
+                <i class="fa-duotone fa-arrow-left-long" aria-hidden="true"></i>
+                &nbsp;<%- __('btn.all_wiki') %>
+            </a>
+            <!-- this product -->
+            <% 
+                if (proj == undefined) {
+                    //如果没有项目名，则使用menu中显示的名字 
+                    if (page.menu_id && theme.sidebar.menu[page.menu_id] && md_link(theme.sidebar.menu[page.menu_id])) {
+                        proj = {
+                            path: md_link(theme.sidebar.menu[page.menu_id]),
+                            wiki: __(md_text(theme.sidebar.menu[page.menu_id]))
+                        };
+                    }
+                } 
+            %>
+            <% if (proj != undefined) { %>
+                <% 
+                    let main = proj.name || proj.title || page.wiki || page.title;
+                    let url = proj.homepage.path;
+                    let sub = proj.subtitle; 
+                %>
+                <a class="title" href="<%- url_for(url || '/') %>">
+                    <div class="main" ff="title">
+                        <%- main %> 
+                    </div>
+                    <% if (sub) { %>
+                        <% let arr = sub.split('|'); %>
+                        <% if (arr.length > 1) { %>
+                            <div class="sub normal cap"> <%- arr.shift().trim() %> </div>
+                            <div class="sub hover cap" style="opacity:0"> <%- arr.join('|') %> </div>
+                        <% } else { %>
+                            <div class="sub cap">' <%- sub %> </div>
+                        <% } %>
+                    <% } %>
+                </a>
+            <% } %>
+        </div>
+    </widget>
+<% } %>

@@ -1,0 +1,24 @@
+<%- partial('_pre', {item: item, isMobile: isMobile}) %>
+
+<%
+function layoutDiv() {
+  if (!item.content?.length) {
+    return ''
+  }
+  var el = '';
+  el += '<widget class="widget-wrapper markdown ' + page.widget_platform + ' '  + page.widget_pin + '">';
+  // if (item.title?.length > 0) {
+  //   el += '<div class="widget-header cap theme dis-select">';
+  //   el += '<span class="name">' + item.title + '</span>';
+  //   el += '</div>';
+  // }
+  el += partial('header', {item: item});
+  el += '<div class="widget-body fs14">';
+  el += markdown(item.content);
+  el += '</div>';
+  el += '</widget>';
+
+  return el;
+}
+%>
+<%- layoutDiv() %>

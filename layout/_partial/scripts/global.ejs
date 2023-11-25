@@ -1,0 +1,397 @@
+<script type="text/javascript">
+    /************这个文件存放不需要重载的全局变量和全局函数*********/
+    window.stellar = {}; // stellar 全局变量
+    stellar.dom = {};
+
+    /********************脚本动态加载函数********************************/
+    // stellar.loadScript(src, cb)  cb 可以传入onload回调函数 或者 JSON对象 例如: stellar.loadScript("src", ()=>{}) 或 stellar.loadScript("src", {defer:true,onload:()=>{}})
+    // stellar.loadCSS(src)
+
+    // 返回Promise对象，如下方法同步加载资源，这利于处理文件资源之间的依赖关系，例如：APlayer 需要在 MetingJS 之前加载
+    // (async () => {
+    //     await stellar.loadScript("...theme.plugins.aplayer.js.aplayer...")
+    //     await stellar.loadScript("...theme.plugins.aplayer.js.meting...")
+    // })();
+    // 从 butterfly 和 stellar 获得灵感
+    stellar.loadScript = (src, opt) => new Promise((resolve, reject) => {
+        setTimeout(function () {
+            var script = document.createElement('script');
+            if (src.startsWith('/')) {
+                src = stellar.GLOBAL_CONFIG.config.root + src.substring(1);
+            }
+            script.src = src;
+            if (opt) {
+                if (JSON.stringify(opt)) {
+                    let hasOnload = false;
+                    for (let p in opt) {
+                        if (p == "onload") {
+                            script[p] = () => {
+                                opt[p]()
+                                resolve()
+                            }
+                            hasOnload = true;
+                        } else {
+                            script[p] = opt[p]
+                        }
+                    }
+                    if (!hasOnload) {
+                        script.onload = resolve
+                    }
+                } else {
+                    script.onload = () => {
+                        opt()
+                        resolve()
+                    };
+                }
+            } else {
+                // 默认异步，如果需要同步，第二个参数传入 {} 即可
+                script.async = true
+                script.onload = resolve
+            }
+            script.onerror = reject
+            document.head.appendChild(script)
+        });
+    });
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    stellar.loadCSS = (href, before, media, attributes) => {
+        var doc = window.document;
+        var ss = doc.createElement("link");
+        var ref;
+        if (before) {
+            ref = before;
+        } else {
+            var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+            ref = refs[refs.length - 1];
+        }
+        var sheets = doc.styleSheets;
+        if (attributes) {
+            for (var attributeName in attributes) {
+                if (attributes.hasOwnProperty(attributeName)) {
+                    ss.setAttribute(attributeName, attributes[attributeName]);
+                }
+            }
+        }
+        ss.rel = "stylesheet";
+        ss.href = href;
+        ss.media = "only x";
+        function ready(cb) {
+            if (doc.body) {
+                return cb();
+            }
+            setTimeout(function () {
+                ready(cb);
+            });
+        }
+        ready(function () {
+            ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+        });
+        var onloadcssdefined = function (cb) {
+            var resolvedHref = ss.href;
+            var i = sheets.length;
+            while (i--) {
+                if (sheets[i].href === resolvedHref) {
+                    return cb();
+                }
+            }
+            setTimeout(function () {
+                onloadcssdefined(cb);
+            });
+        };
+        function loadCB() {
+            if (ss.addEventListener) {
+                ss.removeEventListener("load", loadCB);
+            }
+            ss.media = media || "all";
+        }
+        if (ss.addEventListener) {
+            ss.addEventListener("load", loadCB);
+        }
+        ss.onloadcssdefined = onloadcssdefined;
+        onloadcssdefined(loadCB);
+        return ss;
+    }
+
+
+    /********************按需加载的插件********************************/
+    // stellar.import.jQuery().then(()=>{})
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    stellar.jQuery = (fn) => {
+        if (typeof jQuery === 'undefined') {
+            stellar.loadScript(stellar.GLOBAL_CONFIG.plugins.jQuery).then(fn)
+        } else {
+            fn()
+        }
+    }
+    
+    
+    /********************** requestAnimationFrame ********************************/
+    // 1、requestAnimationFrame 会把每一帧中的所有 DOM 操作集中起来，在一次重绘或回流中就完成，并且重绘或回流的时间间隔紧紧跟随浏览器的刷新频率，一般来说，这个频率为每秒60帧。
+    // 2、在隐藏或不可见的元素中，requestAnimationFrame 将不会进行重绘或回流，这当然就意味着更少的的 cpu，gpu 和内存使用量。
+    stellar.requestAnimationFrame = (fn) => {
+        if (!window.requestAnimationFrame) {
+            window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame;
+        }
+        window.requestAnimationFrame(fn)
+    }
+
+    
+     /******************** stellar.dom.$ ********************************/
+    // 注：这里没有选择器，也没有forEach一次只处理一个dom，这里重新封装主题常用的dom方法，返回的是dom对象，对象包含了以下方法，同时保留dom的原生API
+    function stellarDom(ele) {
+        if (!ele) ele = document.createElement("div")
+        this.ele = ele;
+        // ==============================================================
+        this.ele.find = (c) => {
+            let q = this.ele.querySelector(c)
+            if (q)
+                return new stellarDom(q)
+        }
+        // ==============================================================
+        this.ele.hasClass = (c) => {
+            return this.ele.className.match(new RegExp('(\\s|^)' + c + '(\\s|$)'));
+        }
+        this.ele.addClass = (c) => {
+            this.ele.classList.add(c);
+            return this.ele
+        }
+        this.ele.removeClass = (c) => {
+            this.ele.classList.remove(c);
+            return this.ele
+        }
+        this.ele.toggleClass = (c) => {
+            if (this.ele.hasClass(c)) {
+                this.ele.removeClass(c)
+            } else {
+                this.ele.addClass(c)
+            }
+            return this.ele
+        }
+        // ==============================================================
+        this.ele.on = (c, f) => {
+            this.ele.addEventListener(c, f, false)
+            return this.ele
+        }
+        this.ele.click = (f, r) => {
+            this.ele.on("click", f, r)
+            return this.ele
+        }
+        this.ele.scroll = (f, r) => {
+            this.ele.on("scroll", f, r)
+            return this.ele
+        }
+        // ==============================================================
+        this.ele.html = (c) => {
+            // if(c=== undefined){
+            //   return this.ele.innerHTML
+            // }else{
+            this.ele.innerHTML = c
+            return this.ele
+            // }
+        }
+        // ==============================================================
+        this.ele.hide = (c) => {
+            this.ele.style.display = "none"
+            return this.ele
+        }
+        this.ele.show = (c) => {
+            this.ele.style.display = "block"
+            return this.ele
+        }
+        // ==============================================================
+        return this.ele
+    }
+    stellar.dom.$ = (ele) => {
+        return !!ele ? new stellarDom(ele) : null;
+    }
+
+
+    /******************** RunItem ********************************/
+    function RunItem() {
+        this.list = []; // 存放回调函数
+        this.start = () => {
+            for (var i = 0; i < this.list.length; i++) {
+                this.list[i].run();
+            }
+        };
+        this.push = (fn, name, setRequestAnimationFrame = true) => {
+            let myfn = fn
+            if (setRequestAnimationFrame) {
+                myfn = () => {
+                    stellar.requestAnimationFrame(fn)
+                }
+            }
+            var f = new Item(myfn, name);
+            this.list.push(f);
+        };
+        this.remove = (name) => {
+            for (let index = 0; index < this.list.length; index++) {
+                const e = this.list[index];
+                if (e.name == name) {
+                    this.list.splice(index, 1);
+                }
+            }
+        }
+        // 构造一个可以run的对象
+        function Item(fn, name) {
+            // 函数名称
+            this.name = name || fn.name;
+            // run方法
+            this.run = () => {
+                try {
+                    fn()
+                } catch (error) {
+                    console.log(error);
+                }
+            };
+        }
+    }
+
+    
+    /****************************** 滚动事件处理 ****************************************/
+    stellar.scroll = {
+        engine: new RunItem(),
+        unengine: new RunItem(),
+    };
+    stellar.scroll = Object.assign(stellar.scroll, {
+        push: stellar.scroll.engine.push,
+    });
+    // 滚动条距离顶部的距离
+    stellar.scroll.getScrollTop = () => {
+        let scrollPos;
+        if (window.pageYOffset) {
+            scrollPos = window.pageYOffset;
+        } else if (document.compatMode && document.compatMode != 'BackCompat') {
+            scrollPos = document.documentElement.scrollTop;
+        } else if (document.body) {
+            scrollPos = document.body.scrollTop;
+        }
+        return scrollPos;
+    }
+    stellar.scroll.scrollHeight = function () {
+        return Math.max(
+            document.body.scrollHeight,
+            document.documentElement.scrollHeight,
+        )
+    }
+    stellar.scroll.offsetHeight = function () {
+        return Math.max(
+            document.body.offsetHeight,
+            document.documentElement.offsetHeight,
+            document.body.clientHeight,
+            document.documentElement.clientHeight
+        )
+    }
+    stellar.scroll.progress = function () {
+        return stellar.scroll.getScrollTop() / (stellar.scroll.scrollHeight() - stellar.scroll.offsetHeight())
+    }
+    // 使用 requestAnimationFrame 处理滚动事件
+    // `stellar.scroll.del` 中存储了一个数值, 该数值检测一定时间间隔内滚动条滚动的位移, 数值的检测频率是浏览器的刷新频率. 数值为正数时, 表示向下滚动. 数值为负数时, 表示向上滚动.
+    stellar.scroll.handleScrollEvents = () => {
+        stellar.scroll.lastScrollTop = stellar.scroll.getScrollTop()
+        function loop() {
+            const scrollTop = stellar.scroll.getScrollTop();
+            if (stellar.scroll.lastScrollTop !== scrollTop) {
+                stellar.scroll.del = scrollTop - stellar.scroll.lastScrollTop;
+                stellar.scroll.lastScrollTop = scrollTop;
+                // if (stellar.scroll.del > 0) {
+                //   console.log("向下滚动");
+                // } else {
+                //   console.log("向上滚动");
+                // }
+                // 注销过期的unengine未滚动事件
+                stellar.scroll.unengine.list = []
+                stellar.scroll.engine.start();
+            } else {
+                stellar.scroll.unengine.start();
+            }
+            stellar.requestAnimationFrame(loop)
+        }
+        stellar.requestAnimationFrame(loop)
+    }
+    stellar.scroll.handleScrollEvents()
+    stellar.scroll.ele = null;
+    // 触发页面滚动至目标元素位置
+    stellar.scroll.to = (ele, option = {}) => {
+        if (!ele) return;
+        stellar.scroll.ele = ele;
+        // 默认配置
+        opt = {
+            top: ele.getBoundingClientRect().top + document.documentElement.scrollTop,
+            behavior: "<%- theme.style.smooth_scroll ? 'smooth' : 'instant' %>"
+        }
+        // 定义配置
+        if ("top" in option) {
+            opt.top = option.top
+        }
+        if ("behavior" in option) {
+            opt.behavior = option.behavior
+        }
+        if ("addTop" in option) {
+            opt.top += option.addTop
+        }
+        if (!("observerDic" in option)) {
+            option.observerDic = 100
+        }
+        // 滚动
+        window.scrollTo(opt);
+        // 监视器
+        // 监视并矫正元素滚动到指定位置
+        // 用于处理 lazyload 引起的 cls 导致的定位失败问题
+        // option.observer = false
+        if (option.observer) {
+            setTimeout(() => {
+                if (stellar.scroll.ele != ele) {
+                    return
+                }
+                stellar.scroll.unengine.push(() => {
+                    let me = ele.getBoundingClientRect().top
+                    if (!(me >= -option.observerDic && me <= option.observerDic)) {
+                        stellar.scroll.to(ele, option)
+                    }
+                    stellar.scroll.unengine.remove("unengineObserver")
+                }, "unengineObserver")
+            }, 1000)
+        }
+    }
+
+    /******************** RightMenu ********************************/
+    // stellar.rightmenu.handle(callBack[,"callBackName"]) 外部菜单项控制
+    // 可在 stellar.mouseEvent 处获取右键事件
+    stellar.rightmenu = {};
+    stellar.rightmenu.method = {
+        handle: new RunItem(),
+    }
+    stellar.rightmenu = Object.assign(stellar.rightmenu, {
+        handle: stellar.rightmenu.method.handle.push,
+    });
+    
+
+  /********************  Dark Mode  ********************************/
+  // /layout/_partial/scripts/darkmode.ejs
+  // stellar.dark.mode 当前模式 dark or light
+  // stellar.dark.toggle() 暗黑模式触发器
+  // stellar.dark.push(callBack[,"callBackName"]) 传入触发器回调函数
+  stellar.dark = {};
+  stellar.dark.method = {
+    toggle: new RunItem(),
+  };
+  stellar.dark = Object.assign(stellar.dark, {
+    push: stellar.dark.method.toggle.push,
+  });
+
+  /******************************************************************************/
+  /******************************************************************************/
+  /******************************************************************************/
+  //图像加载出错时的处理
+  function errorImgAvatar(img) {
+    img.src = "<%- theme.default.avatar %>";
+    img.onerror = null;
+  }
+  function errorImgCover(img) {
+    img.src = "<%- theme.default.cover %>";
+    img.onerror = null;
+  }
+  /******************************************************************************/
+
+</script>
+<%- partial('./config') %>

@@ -1,3 +1,18 @@
+navbar:
+  archive: Archive
+  category: Category
+  tag: Tag
+
+footer:
+  license: 'Blog content follows the [Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0) License](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en)'
+  use: Use
+  theme: as theme
+  total_views: total visits
+  total_visitors: total visitors
+  times: times
+  site_source: Uses %s as theme. You can find [source](%s) in %s.
+  site_views: The visits is about %s, and the visitors is about %s.
+
 btn:
   home: Home
   blog: Blog
@@ -19,6 +34,8 @@ meta:
   next: Next
   older: Older
   newer: Newer
+  wordcount: '%s words'
+  duration: '%s min'
   references: References
   related_posts: Related Posts
   comment_title: Join the discussion
@@ -45,6 +62,11 @@ search:
   search: Search
   search_in: Search in %s
   no_results: No Results!
+  # the later is used for layout of volantis
+  title: Search
+  load_data: Loading the Database
+  hits_empty: "We didn't find any results for the search: ${query}."
+  hits_stats: '${hits} results found in ${time} ms'
 
 message:
   copied: Copied!

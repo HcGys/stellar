@@ -68,7 +68,7 @@ const GitHubInfo = {
   },
 }
 
-$(function () {
+function renderGithubInfo() {
   const els = document.getElementsByClassName('stellar-ghinfo-api');
   for (var i = 0; i < els.length; i++) {
     const el = els[i];
@@ -82,4 +82,25 @@ $(function () {
     cfg.class = el.getAttribute('class');
     GitHubInfo.layout(cfg);
   }
+}
+
+// $(function () {
+//   const els = document.getElementsByClassName('stellar-ghinfo-api');
+//   for (var i = 0; i < els.length; i++) {
+//     const el = els[i];
+//     const api = el.getAttribute('api');
+//     if (api == null) {
+//       continue;
+//     }
+//     var cfg = new Object();
+//     cfg.el = el;
+//     cfg.api = api;
+//     cfg.class = el.getAttribute('class');
+//     GitHubInfo.layout(cfg);
+//   }
+// });
+
+$(function () {
+  renderGithubInfo();
 });
+

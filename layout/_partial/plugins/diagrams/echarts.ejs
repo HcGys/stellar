@@ -1,0 +1,58 @@
+<% if (theme.plugins.echarts.enable) { %>
+    <script type="text/javascript" src="<%- theme.plugins.echarts.js %>"></script>
+    <% if (theme.plugins.echarts.theme.dark) { %>
+      <script type="text/javascript" src="https://static.listentothewind.cn/js/echarts_theme/<%- theme.plugins.echarts.theme.dark %>.js"></script>
+    <% } else { %>
+      <script type="text/javascript" src="https://static.listentothewind.cn/js/echarts_theme/dark.js"></script>
+    <% } %>
+    <% if (theme.plugins.echarts.theme.light) { %>
+      <script type="text/javascript" src="https://static.listentothewind.cn/js/echarts_theme/<%- theme.plugins.echarts.theme.light %>.js"></script>
+    <% } else { %>
+      <script type="text/javascript" src="https://static.listentothewind.cn/js/echarts_theme/light.js"></script>
+    <% } %>
+
+    <script>
+      var theme = '';
+      if ("<%- theme.plugins.darkmode.type %>" === 'custom') {
+        theme = stellar.dark.mode === 'dark' ? 'dark' : 'light';
+        // console.log(stellar.dark.mode);
+      } else if ("<%- theme.plugins.darkmode.type %>" === 'auto') {
+        theme = window.matchMedia("(prefers-color-scheme: dark)").matches
+          ? "dark"
+          : 'light';
+      } else if ("<%- theme.plugins.darkmode.type %>" === 'always') {
+        theme = 'dark';
+      }
+
+      window.addEventListener("DOMContentLoaded", function () {
+        if (window.echarts) {
+
+          // 对tabs下的echarts进行标记，用以区分
+          markNodePos('.echarts');
+          // 对默认显示的tab下面的echarts进行标记，用以初始化渲染
+          diagramRenderMark('.echarts', document);
+          // 监听窗口大小变化，重绘echarts
+          window.addEventListener("resize", function () {
+            var echartsNodes = document.querySelectorAll('.echarts');
+            for (var i = 0; i < echartsNodes.length; ++i) {
+              if (echartsNodes[i].classList.contains('infolder') || echartsNodes[i].classList.contains('infolding')) {
+                // 火狐浏览器
+                // 修复 folder、folding下的mermaid宽度高度问题
+                if (echartsNodes[i].classList.contains('active')) {
+                  echarts.getInstanceByDom(echartsNodes[i]).resize();
+                } else {
+                  echartsNodes[i].classList.remove('drew');
+                }
+              }
+              if (!echartsNodes[i].classList.contains('intab') || echartsNodes[i].classList.contains('active')) {
+                echarts.getInstanceByDom(echartsNodes[i]).resize();
+              } else if (echartsNodes[i].classList.contains('intab') && !echartsNodes[i].classList.contains('active')) {
+                echartsNodes[i].classList.remove('drew');
+              }
+            }
+          });
+        }
+      });
+    </script>
+<% } %>
+  

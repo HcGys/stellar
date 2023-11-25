@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang='<%- page.lang %>'>
+<%- partial('../scripts/_ctrl') _%>
+<%- partial('../head') %>
+<body itemscope itemtype="http://schema.org/WebPage">
+
+  <!-- import body_begin begin-->
+  <%_ if (config.import && config.import.body_begin){ _%>
+    <%_ ([...config.import.body_begin]).forEach(function(item){ _%>
+      <%- item %>
+    <%_ }) _%>
+  <%_ } _%>
+  <!-- import body_begin end-->
+  <!-- Custom Files bodyBegin begin-->
+  <%- stellar_inject('bodyBegin') %>
+  <!-- Custom Files bodyBegin end-->
+
+  <%- partial('../bodyBegin') %>
+  <% if (theme.navbar.enable) { %>
+    <%- partial('./_partial/header', null, {cache: false, path: path}) %>
+  <% } %>
+
+  <div id="l_body">
+    <%- partial('./_partial/cover') %>
+      <div id="safearea">
+        <div class="body-wrapper">
+          <%- body %>
+          <aside class='l_left' layout='<%- page.layout %>'>
+            <%- partial('_partial/widgets/load', {isMobile: false}) %>
+          </aside>
+        </div>
+        <%- partial('./_partial/footer', null, {cache: !config.relative_link}) %>
+        <a id="s-top" class="fa-duotone fa-arrow-up fa-fw" title="top"></a>
+      </div>
+  </div>
+
+  <div class="rmMask"></div>
+  <%- partial('../scripts/index') %>
+
+  <!-- import body_end begin -->
+  <%_ if (config.import && config.import.body_end){ _%>
+    <%_ ([...config.import.body_end]).forEach(function(item){ _%>
+      <%- item %>
+    <%_ }) _%>
+  <%_ } _%>
+  <!-- import body_end end-->
+  <!-- Custom Files bodyEnd begin-->
+  <%- stellar_inject('bodyEnd') %>
+  <!-- Custom Files bodyEnd end-->
+
+</body>
+</html>

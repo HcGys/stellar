@@ -1,0 +1,92 @@
+<% if (theme.search.service) { %>
+    <% if (theme.search.service == 'local_search') { %>
+      <script>
+        stellar.jQuery(() => {
+            stellar.loadScript('/js/search/local-search.js', { defer: true }).then(function () {
+            var $inputArea = $("input#search-input");
+            if ($inputArea.length == 0) {
+                return;
+            }
+            var $resultArea = document.querySelector("div#search-result");
+            $inputArea.focus(function() {
+                var path = stellar.GLOBAL_CONFIG.search.config?.path || '/search.json';
+                if (path.startsWith('/')) {
+                path = path.substring(1);
+                }
+                path = stellar.GLOBAL_CONFIG.config.root + path;
+                const filter = $inputArea.attr('data-filter') || '';
+                searchFunc(path, filter, 'search-input', 'search-result');
+            });
+            $inputArea.keydown(function(e) {
+                if (e.which == 13) {
+                e.preventDefault();
+                }
+            });
+            var observer = new MutationObserver(function(mutationsList, observer) {
+                if (mutationsList.length == 1) {
+                if (mutationsList[0].addedNodes.length) {
+                    $('.search-wrapper').removeClass('noresult');
+                } else if (mutationsList[0].removedNodes.length) {
+                    $('.search-wrapper').addClass('noresult');
+                }
+                }
+            });
+            observer.observe($resultArea, { childList: true });
+        });
+      })
+      </script>
+    <% } else { %>
+        <script>
+            async function loadSearchScript() {
+              <% if(theme.search.service === 'algolia') { %>
+                await stellar.loadScript("<%- theme.cdn.algolia_search_v4 %>")
+                await stellar.loadScript("<%- theme.cdn.instantsearch_v4 %>")
+              <% } %>
+                  
+              <% if(theme.search.service === 'meilisearch') { %>
+                await stellar.loadScript("<%- theme.cdn.instantsearch_v4 %>")
+                await stellar.loadScript("<%- theme.cdn.instant_meilisearch %>")
+              <% } %>
+              return stellar.loadScript("<%- theme.cdn['stellar_search_' + theme.search.service] %>");
+            }
+            loadSearchScript();
+            function loadSearchService() {
+              document.querySelectorAll(".input.u-search-input").forEach((e) => {
+                e.removeEventListener("focus", loadSearchService, false);
+              });
+          
+              document.querySelectorAll(".u-search-form").forEach((e) => {
+                e.addEventListener("submit", (event) => {
+                  event.preventDefault();
+                }, false);
+              });
+            }
+          
+            // 打开并搜索 字符串 s
+            function OpenSearch(s="") {
+              if (typeof SearchService === 'undefined')
+                loadSearchScript().then(() => {
+                  SearchService.setQueryText(s);
+                  SearchService.search();
+                });
+              else {
+                SearchService.setQueryText(s);
+                SearchService.search();
+              }
+            }
+          
+            // 访问含有 ?s=xxx  的链接时打开搜索 // 与搜索引擎 structured data 相关: /scripts/helpers/structured-data/lib/config.js
+            if (window.location.search && /^\?s=/g.test(window.location.search)) {
+              let queryText = decodeURI(window.location.search)
+                .replace(/\ /g, "-")
+                .replace(/^\?s=/g, "");
+              OpenSearch(queryText);
+            }
+          
+            // 搜索输入框获取焦点时加载搜索
+            document.querySelectorAll(".input.u-search-input").forEach((e) => {
+              e.addEventListener("focus", loadSearchService, false);
+            });
+          </script>
+    <% } %>
+<% } %>

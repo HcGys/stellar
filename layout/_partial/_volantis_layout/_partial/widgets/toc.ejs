@@ -1,0 +1,31 @@
+<%- partial('_pre', {item: item, isMobile: isMobile}) %>
+
+<%
+function layoutToc() {
+  if (toc(page.content).length > 0) {
+    return toc(page.content, {
+      list_number: item.list_number,
+      min_depth: item.min_depth,
+      max_depth: item.max_depth
+    });
+  }
+  return '';
+}
+
+let toc_content = toc(page.content);
+%>
+
+<% if (toc_content && toc_content.length > 0) { %>
+  <widget class="widget-wrapper toc <%- page.widget_platform %> <%- page.widget_pin %>" id="data-toc">
+      <!-- post 布局 -->
+      <% if (item.header) { %>
+        <% item.header.title = (page.toc_title || page.title || __("meta.toc")) %>
+        <%- partial('header', {item: item}) %>
+      <% } %>
+      <div class="widget-body fs14">
+        <div class="doc-tree active">
+          <%- layoutToc() %>
+        </div>
+      </div>
+  </widget>
+<% } %>

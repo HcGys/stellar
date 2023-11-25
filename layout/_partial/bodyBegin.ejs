@@ -1,0 +1,19 @@
+<!-- rightmenu要在darkmode之前（ToggleButton） darkmode要在comments之前（stellar.dark.push）-->
+<% if (theme.plugins.darkmode.enable && ['sun-night','custom'].includes(theme.plugins.darkmode.type)) { %>
+    <%- partial('_partial/plugins/darkmode/script') %>
+<% } %>
+
+<!-- 在darkmode加载之后加载 -->
+<% if (page.mermaid == true || page.echarts == true){ %>
+    <%- partial('_partial/plugins/diagrams/global') %>
+<% } %>
+<% if (page.mermaid == true){ %>
+    <%- partial('_partial/plugins/diagrams/mermaid') %>
+<% } %>
+<% if (page.echarts == true){ %>
+    <%- partial('_partial/plugins/diagrams/echarts') %>
+<% } %>
+
+<% if (theme.style.layout == 'volantis' && theme.navbar.enable){ %>
+    <%- partial('_partial/plugins/header/script') %>
+<% } %>

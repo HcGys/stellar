@@ -1,0 +1,32 @@
+.widget-wrapper.related-posts
+    .popular-posts
+        .popular-posts-item 
+            line-height: 1.2
+            border-left: 0
+            margin-top: 0.5rem
+            margin-bottom: 1rem
+            display: block
+            > span.popular-posts-title 
+                font-weight: 700
+                font-size: .875rem
+                color: var(--text-p2)
+                transition: color .2s ease-out,border .2s ease-out
+                -moz-transition: color .2s ease-out,border .2s ease-out
+                -webkit-transition: color .2s ease-out,border .2s ease-out
+                -o-transition: color .2s ease-out,border .2s ease-out
+                position: relative
+                padding-bottom: 2px
+                border-bottom: 1px dashed var(--text-meta)
+                line-height: 1.6
+            > span.popular-posts-excerpt 
+                color: var(--text-p3);
+                font-size: .75rem;
+                margin-top: 0.5rem;
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                -webkit-line-clamp: 3
+            &:hover
+                > span.popular-posts-title 
+                    color: $color-hover
+                    border-bottom: 1px solid $color-hover

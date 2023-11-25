@@ -1,0 +1,139 @@
+<%
+var ispage = false;                           // 一二级导航栏切换控制
+var postTitle = '';                           // 当前文章标题，用于二级导航栏赋值
+
+if (page && (page.layout == 'post' || page.layout == 'wiki') && page.title) {
+  ispage = true;
+  postTitle = page.title;
+}
+%>
+
+<script type="text/javascript">
+    window.pdata={};
+    pdata.ispage=<%=ispage%>;
+    stellar.GLOBAL_CONFIG = {
+        version: '<%- theme.stellar.version %>',
+        github: 'https://github.com/xaoxuu/hexo-theme-stellar/tree/<%- theme.stellar.version %>',
+        config: {
+            date_suffix: {
+                just: '<%- __('meta.date_suffix.just') %>',
+                min: '<%- __('meta.date_suffix.min') %>',
+                hour: '<%- __('meta.date_suffix.hour') %>',
+                day: '<%- __('meta.date_suffix.day') %>',
+                month: '<%- __('meta.date_suffix.month') %>',
+            },
+            root: '<%- config.root %>',
+            cdn: {
+                izitoast_css: '<%- theme.cdn.izitoast_css %>',
+                izitoast_js: '<%- theme.cdn.izitoast_js %>',
+            },
+            layout: '<%- theme.style.layout %>',
+        },
+        // required plugins (only load if needs)
+        plugins: {
+            jQuery: '<%- url_for(theme.plugins.jquery || "https://gcore.jsdelivr.net/npm/jquery@3.6.2/dist/jquery.min.js") %>',
+            // stellar js
+            stellar: Object.assign(<%- JSON.stringify(theme.plugins.stellar) %>),
+            marked: Object.assign(<%- JSON.stringify(theme.plugins.marked) %>),
+            // optional plugins
+            <% if(theme.plugins.lazyload.enable) { %>
+                lazyload: Object.assign(<%- JSON.stringify(theme.plugins.lazyload) %>),
+            <% } %>
+
+
+            <% if (theme.plugins.swiper.enable) { %>
+                swiper: Object.assign(<%- JSON.stringify(theme.plugins.swiper) %>),
+            <% } %>
+
+
+            <% if (theme.plugins.scrollreveal.enable) { %>
+                scrollreveal: Object.assign(<%- JSON.stringify(theme.plugins.scrollreveal) %>),
+            <% } %>
+
+
+            <% if (theme.plugins.preload.enable) { %>
+                preload: Object.assign(<%- JSON.stringify(theme.plugins.preload) %>),
+            <% } %>
+
+
+            <% if (theme.plugins.fancybox.enable) { %>
+                fancybox: Object.assign(<%- JSON.stringify(theme.plugins.fancybox) %>),
+            <% } %>
+
+
+            <% if (theme.plugins.heti.enable) { %>
+                heti: Object.assign(<%- JSON.stringify(theme.plugins.heti) %>),
+            <% } %>
+
+
+            <% if (theme.plugins.copycode.enable) { %>
+                copycode: Object.assign(<%- JSON.stringify(theme.plugins.copycode) %>),
+            <% } %>
+
+
+            <% if (theme.plugins.mermaid.enable &&  page.mermaid) { %>
+                mermaid: Object.assign(<%- JSON.stringify(theme.plugins.mermaid) %>),
+            <% } %>
+
+
+            <% if (theme.plugins.echarts.enable && page.echarts) { %>
+                echarts: Object.assign(<%- JSON.stringify(theme.plugins.echarts) %>),
+            <% } %>
+
+
+            <% if (theme.plugins.message.enable) { %>
+                message: <%- JSON.stringify(theme.plugins.message) %>,
+            <% } %>
+
+
+            <% if(theme.plugins.aplayer.enable) { %>
+                aplayer: {
+                    id: <%- JSON.stringify(theme.plugins.aplayer.id) %>,
+                    enable:<%- JSON.stringify(theme.plugins.aplayer.enable) %>
+                },
+            <% } %>
+            
+        },
+
+        // comments: {
+        //     service: '<%- theme.comments.service %>',
+        // },
+        
+        <% if(theme.search.service) { %>
+            search: {
+                service: '<%- theme.search.service %>',
+                <% if (theme.search.service == 'local_search') { %>
+                    config: Object.assign({}, <%- JSON.stringify(theme.search.local_search) %>),
+                <% } else if(theme.search.service === 'hexo') { %>
+                    dataPath: (("<%- config.root %>" || "/").endsWith("/") ? "<%- config.root %>" || "/" : "<%- config.root %>/" || "/") + "<%- config?.jsonContent?.file || "content.json" %>",
+                <% } else if(theme.search.service === 'algolia') { %>
+                    appId: '<%- env.ALGOLIA_APP_ID || config.algolia.appId || config.algolia.applicationID %>',
+                    indexName: '<%- env.ALGOLIA_APP_ID || config.algolia.indexName %>',
+                    apiKey: '<%- env.ALGOLIA_API_KEY || config.algolia.apiKey %>',
+                    hitsPerPage: '<%- theme.search.algolia.hitsPerPage %>',
+                    placeholder: '<%- theme.search.algolia.placeholder %>',
+                    searchAsYouType: <%- theme.search.algolia.searchAsYouType %>,
+                <% } else if(theme.search.service === 'meilisearch') { %>
+                    placeholder: '<%- theme.search.meilisearch.placeholder %>',
+                    apiKey: '<%- theme.search.meilisearch.searchKey %>',
+                    indexName: '<%- theme.search.meilisearch.indexName %>',
+                    appId: '<%- theme.search.meilisearch.hostUrl %>',
+                <% } %>
+            },
+        <% } %>
+
+        languages: {
+            <% if(theme.search.enable) { %>
+                search: {
+                hits_empty: "<%- __('search.hits_empty') %>",
+                hits_stats: "<%- __('search.hits_stats') %>",
+                }
+            <% } %>
+        },
+
+        <% if(theme.rightmenu.enable) { %>
+            rightmenu: <%- JSON.stringify(theme.rightmenu) %>,
+        <% } %>
+    }
+
+</script>

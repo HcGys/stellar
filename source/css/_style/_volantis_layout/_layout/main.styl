@@ -1,0 +1,104 @@
+#safearea
+  margin: $gap $gap 0
+  min-height: "calc(100vh - %s)" % ($navbar-height+$gap)
+
+#l_body
+  position: relative
+  if hexo-config('style.font_smoothing') == true
+    -webkit-font-smoothing: antialiased
+    -moz-osx-font-smoothing: grayscale
+  div.loading
+    margin: $gap 0
+    width: 100%
+    display: block
+    &,p
+      text-align: center
+  #s-top
+    trans1(0.6s)
+    z-index: 8
+    position: fixed
+    width: 48px
+    height: 48px
+    line-height: 48px
+    border-radius: 100%
+    bottom: $gap*2
+    right: $gap*2
+    transform: translateY(100px) scale(0)
+    transform-origin: bottom
+    color: var(--color-text)
+    @media screen and (max-width: $device-tablet)
+      right: $gap
+    &.show
+      transform: translateY(0) scale(1)
+      &.hl
+        background: var(--lay-1)
+        color: $color-link
+        box-shadow: $boxshadow-card
+    @media screen and (min-width: $device-tablet)
+      &:hover
+        transform: scale(1.2)
+        border-radius: 25%
+        background: var(--lay-1)
+        color: $color-hover
+        box-shadow: $boxshadow-card-float
+        &.hl
+          box-shadow: $boxshadow-card-float
+
+.l_main
+  width: "calc(100% - 1 * %s)" % $sidebar
+  @media screen and (max-width: $device-tablet)
+    width: 100%
+  if hexo-config('sidebar.position') =='right'
+    padding-right: $gap
+  if hexo-config('sidebar.position') =='left'
+    padding-left: $gap
+    @media screen and (max-width:$device-tablet)
+      padding-left: 0
+  &.no_sidebar
+    width: 100%
+    padding-right: 0
+    max-width: $layout-width - $sidebar
+    @media screen and (min-width: $device-2k)
+      max-width: "calc(55vw - %s)" % $sidebar
+    margin: auto
+    ~.l_left
+      display: none
+  float: left
+  if hexo-config('sidebar.position') =='left'
+    -webkit-box-ordinal-group: 2;
+    -moz-box-ordinal-group: 2;
+    -ms-flex-order: 2;
+    -webkit-order: 2;
+    order: 2;
+
+.body-wrapper
+  position: relative
+  display: flex
+  width: 100%
+  max-width: $layout-width
+  @media screen and (min-width: $device-2k)
+    max-width: 55vw
+  margin: 0 auto
+  flex-wrap: wrap
+  justify-content: space-between
+  align-items: stretch
+
+#read-next
+  .body .item
+    height: fit-content
+  p.exp 
+    font-size: $fs-14
+    font-weight: 400
+    text-align: justify
+    word-break: break-all
+    color: var(--text-p4)
+    margin: $gap*0.5 0
+    @media screen and (max-width: $device-mobile-max)
+      display: none
+
+#comments
+  .header
+    align-items: flex-start
+    flex-direction: column
+  .content
+    margin-top: $gap*0.5

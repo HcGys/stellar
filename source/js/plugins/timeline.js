@@ -153,7 +153,7 @@ const StellarTimeline = {
   },
 }
 
-$(function () {
+function renderTimeline() {
   const els = document.getElementsByClassName('stellar-timeline-api');
   for (var i = 0; i < els.length; i++) {
     const el = els[i];
@@ -166,4 +166,23 @@ $(function () {
     obj.api = api;
     StellarTimeline.layoutDiv(obj);
   }
+}
+
+// $(function () {
+//   const els = document.getElementsByClassName('stellar-timeline-api');
+//   for (var i = 0; i < els.length; i++) {
+//     const el = els[i];
+//     const api = el.getAttribute('api');
+//     if (api == null) {
+//       continue;
+//     }
+//     var obj = new Object();
+//     obj.el = el;
+//     obj.api = api;
+//     StellarTimeline.layoutDiv(obj);
+//   }
+// });
+
+$(function () {
+  renderTimeline();
 });

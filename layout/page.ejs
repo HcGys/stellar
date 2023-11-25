@@ -1,41 +1,43 @@
-<%
-if (page.title_show == undefined) {
-  page.title_show = true;
-}
-function layoutTitle() {
-  if (!page.title_show && !page.h1) {
-    return ''
+<% if (theme.style.layout === 'default') { %>
+  <%
+  if (page.show_title == undefined) {
+    page.show_title = true;
   }
-  const title = page.h1 || page.title;
-  if (title && title.length > 0) {
-    return '<h1 class="article-title"><span>' + title + '</span></h1>';
-  } else {
-    return '';
-  }
-}
-function layoutDiv() {
-  var el = '';
-  if (page.post_list) {
-    el += partial('_partial/main/navbar/list_post');
-  }
-  if (page.mermaid == true) {
-    el += partial('mermaid');
-  }
-  if (page.echarts == true) {
-    el += partial('echarts');
-  }
-  if (page.h1 || page.title || (page.content && page.content.length > 0)) {
-    el += partial('_partial/main/navbar/breadcrumb');
-  }
-  el += '<article class="md-text content ' + page.layout + (page.indent ? ' indent' : '') + scrollreveal() + '">';
-  el += layoutTitle();
-  if (page.content && page.content.length > 0) {
-    el += page.content;
-  }
-  el += '</article>';
-  el += partial('_partial/plugins/comments/layout');
-  return el;
-}
-%>
-
-<%- layoutDiv() %>
+  %>
+  
+  <% if (page.post_list) { %>
+    <%- partial('_partial/main/navbar/list_post') %>
+  <% } %>
+  <!-- <% if (page.mermaid == true) { %>
+    <%- partial('mermaid') %>
+  <% } %>
+  <% if (page.echarts == true) { %>
+    <%- partial('echarts') %>
+  <% } %> -->
+  <% if (page.h1 || page.title || (page.content && page.content.length > 0)) { %>
+    <%- partial('_partial/main/navbar/breadcrumb') %>
+  <% } %>
+  
+  <article class="md-text content <%- page.layout %> <%- (page.indent ? ' indent' : '') %> <%- scrollreveal() %>">
+  
+  <% if (page.show_title || page.h1) { %>
+    <% const title = page.h1 || page.title; %>
+    <% if (title && title.length > 0) { %>
+      <h1 class="article-title">
+        <span>
+          <%- page.h1 || page.title %>
+        </span>
+      </h1>
+    <% } %>
+  <% } %>
+  
+  <% if (page.content && page.content.length > 0) { %>
+    <%- page.content %>
+  <% } %>
+  
+  </article>
+  
+  <%- partial('_partial/plugins/comments/layout') %>
+<% } else if (theme.style.layout === 'volantis') { %>
+  <%- partial('_partial/_volantis_layout/page') %>
+<% } %>

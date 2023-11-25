@@ -1,0 +1,10 @@
+@import 'base_first'
+@import 'dark_first'
+
+if hexo-config('style.layout') == 'default'
+    @import 'sidebar_first'
+    @import 'cover_first'
+
+if hexo-config('style.layout') == 'volantis'
+    @import 'navbar_first'
+    @import 'search_first'

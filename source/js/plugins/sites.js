@@ -69,7 +69,7 @@ const sitesjs = {
   },
 }
 
-$(function () {
+function renderSites() {
   const els = document.getElementsByClassName('stellar-sites-api');
   for (var i = 0; i < els.length; i++) {
     const el = els[i];
@@ -85,4 +85,26 @@ $(function () {
     cfg.screenshot = 'https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.4/cover/76b86c0226ffd.svg';
     sitesjs.layout(cfg);
   }
+}
+
+// $(function () {
+//   const els = document.getElementsByClassName('stellar-sites-api');
+//   for (var i = 0; i < els.length; i++) {
+//     const el = els[i];
+//     const api = el.getAttribute('api');
+//     if (api == null) {
+//       continue;
+//     }
+//     var cfg = new Object();
+//     cfg.class = el.getAttribute('class');
+//     cfg.el = el;
+//     cfg.api = api;
+//     cfg.avatar = 'https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.4/link/8f277b4ee0ecd.svg';
+//     cfg.screenshot = 'https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.4/cover/76b86c0226ffd.svg';
+//     sitesjs.layout(cfg);
+//   }
+// });
+
+$(function () {
+  renderSites();
 });
